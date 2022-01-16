@@ -1,0 +1,11 @@
+<div class="map-container">
+  <div class="map-frame">
+    <div id="map">
+      <div *ngIf="!isLoading else spinner"></div>
+    </div>
+  </div>
+</div>
+
+<ng-template #spinner>
+  <app-spinner></app-spinner>
+</ng-template>
