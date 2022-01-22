@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
-import {CountriesService} from "../services/countries.service";
+import {take} from 'rxjs/operators';
+
+import {CountriesService} from '../services/countries.service';
 
 @Component({
   selector: 'app-map',
@@ -10,35 +12,33 @@ import {CountriesService} from "../services/countries.service";
 export class MapComponent implements OnInit, AfterViewInit {
   // @ts-ignore
   private map: L.Map;
-  // @ts-ignore
-  // private mapControl = L.control();
-  // @ts-ignore
-  // private countriesBorders: L.GeoJSON;
-  private countriesBorders: any;
   public isLoading: boolean = false;
   // @ts-ignore
-  // private legend = L.control({ position: 'bottomleft' });
+  private countriesBorders: any;
+  // @ts-ignore
+  private countriesLayer: any;
 
-
+  private readonly MAP_CENTER: L.LatLngExpression = [48.85661, 2.3515];
   private readonly SOUTH_WEST_BOUND =  L.latLng(-81, -175);
   private readonly NORTH_EAST_BOUND =  L.latLng(84.5, 190);
   private readonly BOUNDS = L.latLngBounds(this.SOUTH_WEST_BOUND, this.NORTH_EAST_BOUND);
-  // private readonly STATUS_KEYS = ['NewConfirmed', 'TotalConfirmed', 'NewDeaths', 'TotalDeaths', 'NewRecovered', 'TotalRecovered'];
+  private readonly tileTemplate = 'https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=jjvigHLRVr9EwAJlNgFICHMHVo0h8ugKYleAdYjsRdFLVOWrxE7mxa8XEr96lHF0'
   private readonly MIN_ZOOM = 2;
   private readonly MAX_ZOOM = 7;
+
   private readonly HIGHLIGHT_COUNTRY_STYLES = {
-    weight: 0.3,
-    color: '#666',
+    weight: 1,
+    color: 'white',
     opacity: 1,
-    dashArray: '',
+    dashArray: '3',
     fillColor: '#FFF',
     fillOpacity: 0.1,
   }
   private readonly BORDERS_COUNTRY_STYLES = {
-    weight: 0.1,
-    opacity: 0,
+    weight: 0.5,
+    opacity: 1,
     color: 'white',
-    dashArray: '1',
+    dashArray: '3',
     fill: true,
     fillOpacity: 0,
   }
@@ -48,24 +48,30 @@ export class MapComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.initMap();
     this.isLoading = true;
-    this.countriesService.getCountriesBorders().subscribe((borders) => {
-      this.countriesBorders = L.geoJSON(borders, {
-        style: () => this.BORDERS_COUNTRY_STYLES,
-        onEachFeature: this.onCountryEvent,
-      }).addTo(this.map);
-      this.isLoading = false;
+  }
+
+  private initCountriesBorders(): void {
+    this.countriesLayer = L.geoJSON(this.countriesBorders, {
+      style: () => this.BORDERS_COUNTRY_STYLES,
+      onEachFeature: (feature: any, layer: L.Layer) => this.onCountryEvent(feature, layer),
     });
+    this.map.addLayer(this.countriesLayer);
+    this.countriesLayer.bringToBack();
+    this.isLoading = false;
   }
 
   ngAfterViewInit(): void {
-    this.isLoading = true;
+    this.initMap();
+    this.countriesService.getCountriesBorders().pipe(take(1)).subscribe((borders) => {
+      this.countriesBorders = borders;
+      this.initCountriesBorders();
+    })
   }
 
   private initMap(): void {
-    this.map = L.map('map').setView([48.85661, 2.3515], this.MIN_ZOOM);
-    L.tileLayer('https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=jjvigHLRVr9EwAJlNgFICHMHVo0h8ugKYleAdYjsRdFLVOWrxE7mxa8XEr96lHF0', {
+    this.map = L.map('map').setView(this.MAP_CENTER, this.MIN_ZOOM);
+    L.tileLayer(this.tileTemplate, {
       minZoom: this.MIN_ZOOM,
       maxZoom: this.MAX_ZOOM,
     }).addTo(this.map);
@@ -75,11 +81,11 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private onCountryEvent(_: any, layer: L.Layer) {
+  private onCountryEvent(_: any, layer: L.Layer): void {
     layer.on({
-      mouseover: this.highlightCountry,
-      mouseout: this.resetHighlightCountry,
-      click: this.zoomToCountry,
+      mouseover: (e: L.LeafletMouseEvent) => this.highlightCountry(e),
+      mouseout: (e: L.LeafletMouseEvent) => this.resetHighlightCountry(e),
+      click: (e: L.LeafletMouseEvent) => this.zoomToCountry(e),
     });
   }
 
@@ -89,12 +95,10 @@ export class MapComponent implements OnInit, AfterViewInit {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
       layer.bringToFront();
     }
-    // this.mapControl.update(layer.feature.properties);
   }
 
   private resetHighlightCountry(e: L.LayerEvent): void {
-    this.countriesBorders.resetStyle(e.target);
-    // this.mapControl.update();
+    this.countriesLayer.resetStyle(e.target);
   }
 
   private zoomToCountry(e: L.LayerEvent): void {

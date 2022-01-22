@@ -17,7 +17,7 @@ export class CountriesService {
 
   public getCountriesBorders(): Observable<any> {
     // return this.http.get('https://github.com/VVladislaVLL/covid-dashboard/blob/ae1c025811a6207662dc012594d7b75aa12ea941/covid-dashboard/src/js/countries.json', this.httpOptions)
-    return this.http.get('./assets/custom.geo.json', this.httpOptions);
+    return this.http.get('./assets/data/custom.geo.json', this.httpOptions);
   }
 
   public getCountriesInfo(): Observable<any> {
