@@ -6,22 +6,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { SpinnerComponent } from './common/spinner/spinner.component';
-import {CountriesService} from './services/countries.service';
+import { CountriesService } from './services/countries.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    SpinnerComponent
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
-    CountriesService
+    CountriesService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

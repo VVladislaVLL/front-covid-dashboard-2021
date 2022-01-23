@@ -1,28 +1,24 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
-import {take} from 'rxjs/operators';
-
-import {CountriesService} from '../services/countries.service';
+import { take } from 'rxjs/operators';
+import { CountriesService } from '../services/countries.service';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit, AfterViewInit {
-  // @ts-ignore
   private map: L.Map;
-  public isLoading: boolean = false;
-  // @ts-ignore
   private countriesBorders: any;
-  // @ts-ignore
   private countriesLayer: any;
+  public isLoading: boolean = false;
 
   private readonly MAP_CENTER: L.LatLngExpression = [48.85661, 2.3515];
   private readonly SOUTH_WEST_BOUND =  L.latLng(-81, -175);
   private readonly NORTH_EAST_BOUND =  L.latLng(84.5, 190);
   private readonly BOUNDS = L.latLngBounds(this.SOUTH_WEST_BOUND, this.NORTH_EAST_BOUND);
-  private readonly tileTemplate = 'https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=jjvigHLRVr9EwAJlNgFICHMHVo0h8ugKYleAdYjsRdFLVOWrxE7mxa8XEr96lHF0'
+  private readonly tileTemplate = 'https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=jjvigHLRVr9EwAJlNgFICHMHVo0h8ugKYleAdYjsRdFLVOWrxE7mxa8XEr96lHF0';
   private readonly MIN_ZOOM = 2;
   private readonly MAX_ZOOM = 7;
 
@@ -33,7 +29,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     dashArray: '3',
     fillColor: '#FFF',
     fillOpacity: 0.1,
-  }
+  };
   private readonly BORDERS_COUNTRY_STYLES = {
     weight: 0.5,
     opacity: 1,
@@ -41,10 +37,10 @@ export class MapComponent implements OnInit, AfterViewInit {
     dashArray: '3',
     fill: true,
     fillOpacity: 0,
-  }
+  };
 
   constructor(
-    private countriesService: CountriesService
+    private countriesService: CountriesService,
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +62,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.countriesService.getCountriesBorders().pipe(take(1)).subscribe((borders) => {
       this.countriesBorders = borders;
       this.initCountriesBorders();
-    })
+    });
   }
 
   private initMap(): void {
@@ -91,7 +87,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   private highlightCountry(e: L.LayerEvent): void {
     const layer = e.target;
-    layer.setStyle({...this.HIGHLIGHT_COUNTRY_STYLES});
+    layer.setStyle({ ...this.HIGHLIGHT_COUNTRY_STYLES });
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
       layer.bringToFront();
     }
