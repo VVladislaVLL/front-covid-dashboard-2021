@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { take } from 'rxjs/operators';
-import { CountriesService } from '../services/countries.service';
+import { CountriesService } from '../shared/services/countries.service';
 
 @Component({
   selector: 'app-map',
