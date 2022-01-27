@@ -42,6 +42,7 @@
               }
             ],
             "styles": [
+              "src/theme/reset.scss",
               "src/styles.scss",
               "./node_modules/leaflet/dist/leaflet.css"
             ],
