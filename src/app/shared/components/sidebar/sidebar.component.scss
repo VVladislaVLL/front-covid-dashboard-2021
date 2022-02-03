@@ -1,0 +1,27 @@
+@import "../../../../theme/core-variables";
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  padding: px-to-rem(30px);
+  //background: $grey-color;
+  background: rgba(93, 93, 93, 0.3);
+}
+
+.sidebar-common {
+
+  .sidebar-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    .header-title {
+      font-size: px-to-rem(36px);
+      font-weight: bold;
+    }
+
+    .header-action-icon {
+
+    }
+  }
+}

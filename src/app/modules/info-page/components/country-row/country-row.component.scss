@@ -1,0 +1,33 @@
+@import "../../../../../theme/core-variables";
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 4fr 2fr;
+  font-size: px-to-rem($base-font-size);
+  justify-content: space-between;
+  align-items: center;
+  padding: px-to-rem(5px) 0;
+
+  .row-number {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .country-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+
+  .country-flag {
+    width: px-to-rem(60px);
+    height: px-to-rem(40px);
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}

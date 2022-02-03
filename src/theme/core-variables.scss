@@ -1,0 +1,14 @@
+@use "sass:math";
+
+$base-font-size: 16px;
+$default-font: "Murecho", sans-serif;
+
+// Colors
+$grey-color: #343331;
+$light-grey-color: #E5E5E5;
+$basic-grey-color: rgba(189, 189, 189, 0.6);
+$red-color: #eb6a5a;
+
+@function px-to-rem($px) {
+  @return math.div($px, $base-font-size) * 1rem;
+}

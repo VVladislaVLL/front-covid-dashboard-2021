@@ -1,0 +1,15 @@
+@import "../../../../theme/core-variables";
+
+.case-block {
+  //width: 100%;
+  //height: 100%;
+  border-radius: px-to-rem(40px);
+  padding: px-to-rem(16px);
+  background: $basic-grey-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: px-to-rem(20px);
+  margin: px-to-rem(10px);
+}

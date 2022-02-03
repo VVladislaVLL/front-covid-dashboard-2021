@@ -1,4 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@import "src/theme/core-variables";
+@import "src/theme/mixins";
+
 body {
+  @include text-semibold();
+
   background: black;
+  margin: 0;
+  padding: 0;
+  color: white;
+  font-size: px-to-rem($base-font-size);
+}
+
+
+.highlight-text {
+  color: $red-color;
 }

@@ -1,0 +1,30 @@
+<div class="country-info-page">
+  <div class="sidebar-view">
+    <ng-container *ngIf="isEnoughDataToDisplayCountryInfoSidebar() else loading">
+      <app-sidebar>
+        <div class="sidebar-content">
+          <div class="general">
+            <app-general-info
+              [data]="covidGeneralData"
+            ></app-general-info>
+          </div>
+          <div class="search">
+            <app-search
+              [countries]="countriesData"
+            ></app-search>
+          </div>
+        </div>
+      </app-sidebar>
+    </ng-container>
+  </div>
+  <div class="map-view">
+    <app-map
+      [covidData]="countriesData"
+      (selectCountry)="onSelectCountry($event)"
+    ></app-map>
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-spinner></app-spinner>
+</ng-template>

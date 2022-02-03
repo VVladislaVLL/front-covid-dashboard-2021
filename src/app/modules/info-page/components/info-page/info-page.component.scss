@@ -1,0 +1,23 @@
+.country-info-page {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+
+  .sidebar-view {
+    position: relative;
+    flex: 3;
+
+    .sidebar-content {
+      display: flex;
+      flex-direction: column;
+
+      .general {
+        //margin: 0 px-to-rem(20px);
+      }
+    }
+  }
+
+  .map-view {
+    flex: 5;
+  }
+}

@@ -1,0 +1,35 @@
+@mixin text-light() {
+  font-family: Mulish-Light, sans-serif;
+}
+
+@mixin text-light-italic() {
+  font-family: Mulish-LightIt, sans-serif;
+}
+
+@mixin text-regular() {
+  font-family: Mulish-Regular, sans-serif;
+}
+
+@mixin text-regular-italic() {
+  font-family: Mulish-RegularIt, sans-serif;
+}
+
+@mixin text-medium() {
+  font-family: Mulish-Medium, sans-serif;
+}
+
+@mixin text-medium-italic() {
+  font-family: Mulish-MediumIt, sans-serif;
+}
+
+@mixin text-semibold() {
+  font-family: Mulish-SemiBold, sans-serif;
+}
+
+@mixin text-bold() {
+  font-family: Mulish-Bold, sans-serif;
+}
+
+@mixin text-extrabold() {
+  font-family: Mulish-ExtraBold, sans-serif;
+}
