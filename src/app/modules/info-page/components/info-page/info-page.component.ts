@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { CountriesService } from '../../../../shared/services/countries.service';
 import { take } from 'rxjs/operators';
-import { IBasicCountryInfo, ICovidGeneralData } from '../../../../models';
 import { zip } from 'rxjs';
+
+import { CountriesService } from 'src/app/shared/services/countries.service';
+import { IBasicCountryInfo, ICovidGeneralData } from 'src/app/models';
 
 @Component({
   selector: 'app-info-page',

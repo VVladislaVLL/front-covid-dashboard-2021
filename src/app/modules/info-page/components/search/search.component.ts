@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { IBasicCountryInfo } from '../../../../models';
+
+import { IBasicCountryInfo } from 'src/app/models';
 
 @Component({
   selector: 'app-search',

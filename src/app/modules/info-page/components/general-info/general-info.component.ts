@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { ICovidGeneralData } from '../../../../models';
+
+import { ICovidGeneralData } from 'src/app/models';
 
 @Component({
   selector: 'app-general-info',

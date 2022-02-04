@@ -9,11 +9,11 @@ import {
   ChangeDetectorRef, OnChanges, SimpleChanges,
 } from '@angular/core';
 import * as L from 'leaflet';
-
-import { CountriesService } from '../../../../shared/services/countries.service';
-import { ColorsScaler } from './map.models';
-import { IBasicCountryInfo } from '../../../../models';
 import { take } from 'rxjs/operators';
+
+import { CountriesService } from 'src/app/shared/services/countries.service';
+import { IBasicCountryInfo } from 'src/app/models';
+import { ColorsScaler } from './map.models';
 
 @Component({
   selector: 'app-map',
@@ -122,7 +122,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private onCountryEvent(feature: any, layer: L.Layer): void {
-    const popupContent = 'hello world';
     const currentCounty = this.getCountryByISO2(feature.properties.iso_a2);
     console.log(currentCounty);
     const popupContent2 = `
