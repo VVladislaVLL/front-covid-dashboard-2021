@@ -1,0 +1,10 @@
+<div class="wrapper">
+  <ul class="content">
+    <li *ngFor="let data of displayedData">
+      <span class="row">
+        <span class="color-rect" [style.background-color]="data.color"></span>
+        <span class="value">{{data.value}}</span>
+      </span>
+    </li>
+  </ul>
+</div>

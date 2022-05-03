@@ -1,9 +1,16 @@
+@import "src/theme/core-variables";
+
+:host {
+  margin: px-to-rem(10px) 0;
+}
+
+
 .general-info {
   display: grid;
 
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
 
-  grid-column-gap: px-to-rem(16px);
-  grid-row-gap: px-to-rem(16px);
+  grid-column-gap: px-to-rem(10px);
+  grid-row-gap: px-to-rem(10px);
 }

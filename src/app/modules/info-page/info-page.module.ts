@@ -8,6 +8,9 @@ import { GeneralInfoComponent } from './components/general-info/general-info.com
 import { MapComponent } from './components/map/map.component';
 import { SearchComponent } from './components/search/search.component';
 import { InfoPageComponent } from './components/info-page/info-page.component';
+import { CountriesListComponent } from './components/countries-list/countries-list.component';
+import { LegendComponent } from './components/legend/legend.component';
+import { CountryTooltipComponent } from './components/country-tooltip/country-tooltip.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +19,9 @@ import { InfoPageComponent } from './components/info-page/info-page.component';
     MapComponent,
     SearchComponent,
     InfoPageComponent,
+    CountriesListComponent,
+    LegendComponent,
+    CountryTooltipComponent,
   ],
   imports: [
     CommonModule,

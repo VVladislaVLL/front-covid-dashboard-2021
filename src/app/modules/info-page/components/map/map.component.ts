@@ -1,19 +1,24 @@
 import {
-  Component,
-  OnInit,
   AfterViewInit,
-  Output,
-  EventEmitter,
-  Input,
   ChangeDetectionStrategy,
-  ChangeDetectorRef, OnChanges, SimpleChanges,
+  ChangeDetectorRef,
+  Component, ComponentFactoryResolver, ComponentRef,
+  EventEmitter, Inject, Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges, TemplateRef, ViewChild, ViewContainerRef,
 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import * as L from 'leaflet';
 import { take } from 'rxjs/operators';
 
 import { CountriesService } from 'src/app/shared/services/countries.service';
-import { IBasicCountryInfo } from 'src/app/models';
-import { ColorsScaler } from './map.models';
+import { IBasicCountryInfo, InfoField } from 'src/app/models';
+import { getColor } from './map.helpers';
+import { GEO_JSON_ISO_A2, GEO_JSON_NAME, TITLE_TEMPLATE } from './map.constants';
+import { CountryTooltipComponent } from 'src/app/modules/info-page/components/country-tooltip/country-tooltip.component';
 
 @Component({
   selector: 'app-map',
@@ -23,31 +28,43 @@ import { ColorsScaler } from './map.models';
 })
 export class MapComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() covidData: IBasicCountryInfo[] = [];
+  @Input() selectedOption: InfoField;
+  @ViewChild('countryTooltip') template: TemplateRef<any>;
+
   @Output() selectCountry = new EventEmitter<string>();
+  @Output() hidden = new EventEmitter();
+  @Output() shown = new EventEmitter();
+
+
+  private tooltip: ComponentRef<CountryTooltipComponent>;
+
   private map: L.Map;
   private countriesBorders: any;
   private countriesLayer: any;
   public isLoading: boolean = false;
+  public hoveredCountry = null;
 
   private readonly MAP_CENTER: L.LatLngExpression = [48.85661, 2.3515];
   private readonly SOUTH_WEST_BOUND =  L.latLng(-81, -175);
   private readonly NORTH_EAST_BOUND =  L.latLng(84.5, 190);
   private readonly BOUNDS = L.latLngBounds(this.SOUTH_WEST_BOUND, this.NORTH_EAST_BOUND);
-  private readonly tileTemplate = 'https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=jjvigHLRVr9EwAJlNgFICHMHVo0h8ugKYleAdYjsRdFLVOWrxE7mxa8XEr96lHF0';
+  private readonly tileTemplate = TITLE_TEMPLATE;
   private readonly MIN_ZOOM = 2;
   private readonly MAX_ZOOM = 7;
-
   private readonly HIGHLIGHT_COUNTRY_STYLES = {
     weight: 1.5,
     color: 'white',
     opacity: 1,
     dashArray: '3',
   };
-  private colorScale: ColorsScaler;
 
   constructor(
     private countriesService: CountriesService,
     private changeDetection: ChangeDetectorRef,
+    private resolver: ComponentFactoryResolver,
+    private viewContainerRef: ViewContainerRef,
+    private injector: Injector,
+    @Inject(DOCUMENT) private document: Document,
   ) {}
 
 
@@ -58,6 +75,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
         this.initCountriesBorders();
         this.changeDetection.markForCheck();
       });
+    }
+
+    if (changes.selectedOption && !changes.selectedOption.firstChange) {
+      this.reinitCountriesStyles();
     }
   }
 
@@ -80,7 +101,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private getStyles(feature: any) {
-    const countryCovidInfo = this.getCovidInfoByISO2CodeFromGeoJson(feature.properties.iso_a2);
+    const countryCovidInfo = this.getCovidInfoByISO2CodeFromGeoJson(feature.properties[GEO_JSON_ISO_A2]);
     if (countryCovidInfo !== null) {
       return ({
         weight: 0.5,
@@ -88,10 +109,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
         color: 'white',
         dashArray: '3',
         fill: true,
-        // fillColor: this.colorScale('' + countryCovidInfo.infected),
-        // fillColor: this.colorScale('' + countryCovidInfo.infected),
-        // fillOpacity: countryCovidInfo.infected > 0 ? 0.5 : 0,
-        fillOpacity: 0,
+        ...MapComponent.getCountyColor(countryCovidInfo, this.selectedOption),
       });
     }
     return ({
@@ -122,27 +140,19 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private onCountryEvent(feature: any, layer: L.Layer): void {
-    const currentCounty = this.getCountryByISO2(feature.properties.iso_a2);
-    console.log(currentCounty);
-    const popupContent2 = `
-      <img src="${currentCounty?.flag}"/>
-      <h3>${currentCounty?.name}</h3>
-    `;
-    layer.bindPopup(popupContent2);
     layer.on({
       mouseover: (e: L.LeafletMouseEvent) => {
         this.highlightCountry(e);
-        console.log(feature.properties);
-        layer.openPopup();
+        this.showCountryTooltip(this.getCountryByISO2(feature.properties[GEO_JSON_ISO_A2], feature), e);
       },
       mouseout: (e: L.LeafletMouseEvent) => {
         this.resetHighlightCountry(e);
-        layer.closePopup();
+        this.destroyTooltip();
       },
       click: (e: L.LeafletMouseEvent) => this.zoomToCountry(e),
-      mousemove: (e: L.LeafletMouseEvent) => {
-        layer.getPopup()?.setLatLng(e.latlng);
-      },
+      // mousemove: (e: L.LeafletMouseEvent) => {
+      // layer.getPopup()?.setLatLng(e.latlng);
+      // },
     });
   }
 
@@ -160,12 +170,62 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
 
   private zoomToCountry(e: L.LayerEvent): void {
     this.map.fitBounds(e.target.getBounds());
-    // this.map.flyToBounds(e.target.getBounds(), { animate: true });
-    this.selectCountry.emit(e.sourceTarget.feature.properties.iso_a2);
+    this.selectCountry.emit(e.sourceTarget.feature.properties[GEO_JSON_ISO_A2]);
   }
 
-  private getCountryByISO2(iso2: string):IBasicCountryInfo | null {
-    console.log('getCountryByISO2', iso2);
-    return this.covidData.find((country: IBasicCountryInfo) => country.iso2 === iso2) || null;
+  private getCountryByISO2(iso2: string, geoJSONCountry?: any):IBasicCountryInfo | null {
+    const currentCountry = this.covidData.find((country: IBasicCountryInfo) => country.iso2 === iso2);
+    return currentCountry == null
+      ? this.covidData.find((country) => (country.name === geoJSONCountry.properties[GEO_JSON_NAME])) || null
+      : currentCountry;
+  }
+
+  private static getCountyColor(countyInfo: IBasicCountryInfo, field: InfoField = InfoField.Infected): { fillColor: string; fillOpacity: number } {
+    const coefficientInRelationToThePopulation = countyInfo[field] / countyInfo.population;
+    return {
+      fillColor: getColor(coefficientInRelationToThePopulation, field),
+      fillOpacity: isNaN(coefficientInRelationToThePopulation) || coefficientInRelationToThePopulation === 0 ? 0 : 0.5,
+    };
+  }
+
+  private reinitCountriesStyles(): void {
+    this.countriesLayer.resetStyle();
+    this.countriesLayer.setStyle((feature: any) => this.getStyles(feature));
+  }
+
+  private createCountryTooltip(): void {
+    const factory = this.resolver.resolveComponentFactory(CountryTooltipComponent);
+    const view = this.viewContainerRef.createEmbeddedView(this.template);
+    const nodes = [view.rootNodes];
+    this.tooltip = this.viewContainerRef.createComponent(
+      factory,
+      undefined,
+      this.injector,
+      nodes,
+    );
+    this.tooltip.location.nativeElement.style.top = '-1000px';
+    this.tooltip.location.nativeElement.style.left = '-1000px';
+    this.tooltip.location.nativeElement.style.visibility = 'hidden';
+    this.document.body.appendChild(this.tooltip.location.nativeElement);
+  }
+
+  public hideCountryTooltip(): void {
+    this.destroyTooltip();
+  }
+
+  private destroyTooltip(): void {
+    this.viewContainerRef.clear();
+  }
+
+  private showCountryTooltip(country: IBasicCountryInfo | null, event: L.LeafletMouseEvent): void {
+    if (country) {
+      this.createCountryTooltip();
+      const tooltipComponent = this.tooltip.instance;
+      tooltipComponent.countryInfo = country;
+      this.tooltip.location.nativeElement.style.top = event.originalEvent.screenY + 'px';
+      this.tooltip.location.nativeElement.style.left = event.originalEvent.screenX + 'px';
+      this.tooltip.location.nativeElement.style.visibility = '';
+      this.tooltip.changeDetectorRef.detectChanges();
+    }
   }
 }

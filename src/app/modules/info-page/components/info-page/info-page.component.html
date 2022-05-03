@@ -11,6 +11,8 @@
           <div class="search">
             <app-search
               [countries]="countriesData"
+              [selectedOption]="selectedOption"
+              (selectCountry)="onSelectCountry($event)"
             ></app-search>
           </div>
         </div>
@@ -18,8 +20,13 @@
     </ng-container>
   </div>
   <div class="map-view">
+    <app-select [options]="selectedOptions" (optionChange)="handleOptionChanges($event)"></app-select>
+    <app-legend
+      [selectedFieldValue]="selectedOption.value"
+    ></app-legend>
     <app-map
       [covidData]="countriesData"
+      [selectedOption]="selectedOption.value"
       (selectCountry)="onSelectCountry($event)"
     ></app-map>
   </div>

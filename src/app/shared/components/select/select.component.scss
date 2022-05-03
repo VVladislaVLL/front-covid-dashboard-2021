@@ -1,0 +1,9 @@
+@import "src/theme/core-variables";
+
+:host {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1000;
+  margin: px-to-rem(10px);
+}

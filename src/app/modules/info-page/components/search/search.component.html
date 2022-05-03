@@ -5,15 +5,10 @@
       (searchValue)="onSearch($event)"
     ></app-search-input>
   </div>
-  <div class="countries-list">
-    <ul class="countries">
-      <li *ngFor="let country of countriesToDisplay; let i = index">
-        <app-country-row
-          [rowNumber]="i + 1"
-          [country]="country"
-          [highlight]="seachValue"
-        ></app-country-row>
-      </li>
-    </ul>
-  </div>
+  <app-countries-list
+    [countriesToDisplay]="countriesToDisplay"
+    [searchValue]="searchValue"
+    [selectedField]="selectedOption"
+    (selectCountry)="selectCountry.emit($event)"
+  ></app-countries-list>
 </div>

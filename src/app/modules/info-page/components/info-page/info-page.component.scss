@@ -1,6 +1,8 @@
+@import "src/theme/core-variables";
+
 .country-info-page {
   display: flex;
-  height: 100vh;
+  height: 100%;
   width: 100%;
 
   .sidebar-view {
@@ -10,14 +12,15 @@
     .sidebar-content {
       display: flex;
       flex-direction: column;
-
-      .general {
-        //margin: 0 px-to-rem(20px);
-      }
     }
   }
 
   .map-view {
     flex: 5;
+    position: relative;
   }
+}
+
+.search {
+  overflow: scroll;
 }

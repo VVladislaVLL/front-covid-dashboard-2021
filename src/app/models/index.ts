@@ -17,3 +17,11 @@ export interface ICovidGeneralData extends Pick<
 IBasicCountryInfo,
 'infected' | 'recovered' | 'dead' | 'sick' | 'vaccinated' | 'lastUpdated'
 > {}
+
+export enum InfoField {
+  Infected = 'infected',
+  Recovered = 'recovered',
+  Dead = 'dead',
+  Sick = 'sick',
+  Vaccinated = 'vaccinated',
+}

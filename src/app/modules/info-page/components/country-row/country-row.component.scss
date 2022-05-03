@@ -1,12 +1,13 @@
-@import "../../../../../theme/core-variables";
+@import "src/theme/core-variables";
 
 .row {
   display: grid;
-  grid-template-columns: 1fr 2fr 4fr 2fr;
+  grid-template-columns: 1fr 2fr 4fr 3fr;
   font-size: px-to-rem($base-font-size);
   justify-content: space-between;
   align-items: center;
   padding: px-to-rem(5px) 0;
+  border-bottom: #414141 solid 1px;
 
   .row-number {
     display: flex;
@@ -23,9 +24,9 @@
 
 
   .country-flag {
-    width: px-to-rem(60px);
+    width: px-to-rem(40px);
     height: px-to-rem(40px);
-
+    border-radius: 50%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

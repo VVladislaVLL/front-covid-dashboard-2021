@@ -14,7 +14,6 @@ export class SearchInputComponent implements OnInit {
 
   public ngOnInit(): void {
     this.input.valueChanges.subscribe((value: string) => {
-      console.log('SearchInputComponent', value);
       this.searchValue.emit(value.toLocaleLowerCase());
     });
   }

@@ -1,1 +1,4 @@
-<input type="text" [formControl]="input" placeholder="mg-icon Search {{ numberOfCountries }} regions">
+<mat-form-field class="search">
+  <mat-label>Search {{ numberOfCountries }} regions</mat-label>
+  <input matInput [formControl]="input">
+</mat-form-field>

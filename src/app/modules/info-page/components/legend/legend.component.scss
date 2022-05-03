@@ -1,0 +1,42 @@
+@import "src/theme/core-variables";
+
+:host {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  margin: px-to-rem(10px);
+}
+
+.wrapper {
+  background: $dark-grey-color;
+  padding: px-to-rem(10px);
+  height: px-to-rem(220px);
+  width: px-to-rem(200px);
+  border-radius: px-to-rem(5px);
+  overflow: auto;
+  column-count:2;
+}
+
+.content {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.color-rect {
+  display: inline-block;
+  width: px-to-rem(10px);
+  height: px-to-rem(10px);
+}
+
+.value {
+  font-size: px-to-rem(10px);
+}

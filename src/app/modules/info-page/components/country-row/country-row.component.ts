@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
-import { IBasicCountryInfo } from 'src/app/models';
+import { IBasicCountryInfo, InfoField } from 'src/app/models';
 
 @Component({
   selector: 'app-country-row',
@@ -12,4 +12,5 @@ export class CountryRowComponent {
   @Input() country: IBasicCountryInfo;
   @Input() rowNumber: number;
   @Input() highlight: string = '';
+  @Input() selectedFieldValue: InfoField;
 }

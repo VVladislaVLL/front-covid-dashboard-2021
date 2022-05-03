@@ -1,0 +1,56 @@
+@import "src/theme/core-variables";
+
+:host {
+  position: absolute;
+  z-index: 5000;
+}
+
+.wrapper {
+  padding: px-to-rem(10px);
+  background-color: $dark-tooltip-grey-color;
+  //background-color: $dark-grey-color;
+  color: white;
+  width: px-to-rem(200px);
+  height: fit-content;
+  border-radius: px-to-rem(5px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: px-to-rem(5px);
+  border-bottom: 1px white solid;
+
+  .title {
+    display: flex;
+    flex-direction: column;
+
+    .name {
+      font-size: px-to-rem(20px);
+      font-weight: bold;
+    }
+
+    .population {
+      font-size: px-to-rem(13px);
+    }
+  }
+
+  .flag {
+    width: px-to-rem(60px);
+    height: px-to-rem(40px);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+
+  .info-field {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 px-to-rem(5px);
+  }
+}

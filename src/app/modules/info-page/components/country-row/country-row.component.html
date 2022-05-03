@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="row-number"><span>{{ rowNumber }}</span></div>
+  <div class="row-number"><span>{{ rowNumber }}.</span></div>
   <div class="country-flag" [ngStyle]="{'background-image': 'url(' + country.flag + ')'}">
   </div>
   <div class="country-name">
     <span [innerHTML]="country.name | appHighlight: highlight">{{ country.name }}</span>
   </div>
   <div class="country-value">
-    <span> {{country.infected | number }}</span>
+    <span> {{country[selectedFieldValue] | number }}</span>
   </div>
 </div>

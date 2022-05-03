@@ -1,15 +1,20 @@
-@import "../../../../theme/core-variables";
+@import "src/theme/core-variables";
 
 .case-block {
-  //width: 100%;
-  //height: 100%;
-  border-radius: px-to-rem(40px);
-  padding: px-to-rem(16px);
-  background: $basic-grey-color;
+  border-radius: px-to-rem(5px);
+  background: $dark-grey-color;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  font-size: px-to-rem(20px);
-  margin: px-to-rem(10px);
+  align-items: flex-start;
+  padding: px-to-rem(16px);
+
+  .case-title {
+    font-size: px-to-rem(20px);
+  }
+
+  .case-value {
+    font-size: px-to-rem(14px);
+  }
 }
+

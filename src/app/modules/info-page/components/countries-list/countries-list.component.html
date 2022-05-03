@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <div class="header">
+    <span>№</span>
+    <span>Flag</span>
+    <span>Country Name</span>
+    <span>{{selectedField.viewValue}}</span>
+  </div>
+  <div class="countries-list">
+    <ul class="countries">
+      <li
+        *ngFor="let country of countriesToDisplay; let i = index"
+        (click)="selectCountry.emit(country.iso2)"
+      >
+        <app-country-row
+          [rowNumber]="i + 1"
+          [country]="country"
+          [highlight]="searchValue"
+          [selectedFieldValue]="selectedField.value"
+        ></app-country-row>
+      </li>
+    </ul>
+  </div>
+</div>
