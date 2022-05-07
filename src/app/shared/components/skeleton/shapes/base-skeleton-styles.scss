@@ -1,0 +1,40 @@
+@import "src/theme/core-variables";
+
+$background-size-skeleton: px-to-rem(200px);
+
+:host {
+    height: fit-content;
+}
+
+.skeleton-component {
+    display: flex;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    transform: translate3d(0, 0, 0);
+    background: $skeleton-background-color;
+
+    &:before {
+        box-sizing: border-box;
+        animation: loading 2s linear infinite;
+        background-image: $skeleton-background-gradient;
+        background-size: $background-size-skeleton 100%;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: $background-size-skeleton;
+        height: 100%;
+        content: "";
+    }
+}
+
+@keyframes loading {
+    0% {
+        transform: translate3d(-$background-size-skeleton, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(calc(200px + 100vw), 0, 0);
+    }
+}

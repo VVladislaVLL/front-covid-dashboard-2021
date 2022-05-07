@@ -11,6 +11,7 @@ import { InfoPageComponent } from './components/info-page/info-page.component';
 import { CountriesListComponent } from './components/countries-list/countries-list.component';
 import { LegendComponent } from './components/legend/legend.component';
 import { CountryTooltipComponent } from './components/country-tooltip/country-tooltip.component';
+import { SidebarSkeletonComponent } from './components/sidebar-skeleton/sidebar-skeleton.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CountryTooltipComponent } from './components/country-tooltip/country-to
     CountriesListComponent,
     LegendComponent,
     CountryTooltipComponent,
+    SidebarSkeletonComponent,
   ],
   imports: [
     CommonModule,

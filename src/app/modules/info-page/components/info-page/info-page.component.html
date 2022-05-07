@@ -1,7 +1,7 @@
 <div class="country-info-page">
   <div class="sidebar-view">
-    <ng-container *ngIf="isEnoughDataToDisplayCountryInfoSidebar() else loading">
-      <app-sidebar>
+    <app-skeleton-wrapper [isLoading]="!isEnoughDataToDisplayCountryInfoSidebar()">
+      <app-sidebar *ngIf="isEnoughDataToDisplayCountryInfoSidebar()">
         <div class="sidebar-content">
           <div class="general">
             <app-general-info
@@ -17,7 +17,8 @@
           </div>
         </div>
       </app-sidebar>
-    </ng-container>
+      <app-sidebar-skeleton skeleton></app-sidebar-skeleton>
+    </app-skeleton-wrapper>
   </div>
   <div class="map-view">
     <app-select [options]="selectedOptions" (optionChange)="handleOptionChanges($event)"></app-select>
@@ -32,6 +33,6 @@
   </div>
 </div>
 
-<ng-template #loading>
-  <app-spinner></app-spinner>
-</ng-template>
+<!--<ng-template #loading>-->
+<!--  <app-spinner></app-spinner>-->
+<!--</ng-template>-->

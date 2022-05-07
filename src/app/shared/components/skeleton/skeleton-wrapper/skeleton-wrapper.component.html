@@ -1,0 +1,7 @@
+<ng-container *ngIf="isLoading; else content">
+    <ng-content select="[skeleton]"></ng-content>
+</ng-container>
+
+<ng-template #content>
+    <ng-content></ng-content>
+</ng-template>

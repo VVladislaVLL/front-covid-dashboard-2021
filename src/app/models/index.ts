@@ -25,3 +25,6 @@ export enum InfoField {
   Sick = 'sick',
   Vaccinated = 'vaccinated',
 }
+
+export const DEFAULT_FONT_SIZE: number = 16;
+

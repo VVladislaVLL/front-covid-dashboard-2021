@@ -1,0 +1,9 @@
+<span
+    class="skeleton-component line"
+    [style.width.rem]="width | appPxToRem"
+    [style.height.rem]="heightPx | appPxToRem"
+    [style.margin-left.rem]="marginsPx?.left || 0 | appPxToRem"
+    [style.margin-right.rem]="marginsPx?.right || 0 | appPxToRem"
+    [style.margin-top.rem]="marginsPx?.top || 0 | appPxToRem"
+    [style.margin-bottom.rem]="marginsPx?.bottom || 0 | appPxToRem"
+></span>

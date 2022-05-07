@@ -1,0 +1,6 @@
+@import "src/theme/core-variables";
+
+.line {
+    height: $base-font-size-rem;
+    border-radius: px-to-rem(8px);
+}

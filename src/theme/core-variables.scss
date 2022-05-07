@@ -10,6 +10,17 @@ $dark-grey-color: rgba(61, 61, 61, 0.6);
 $dark-tooltip-grey-color: rgb(52, 52, 52);
 $basic-grey-color: rgba(189, 189, 189, 0.6);
 $red-color: #eb6a5a;
+$skeleton-background-color: #545454;
+$gray-skeleton-gradient-first-color: #505050;
+$gray-skeleton-gradient-second-color: #4b4b4b;
+$skeleton-background-gradient: linear-gradient(
+    90deg,
+    $gray-skeleton-gradient-first-color -24.18%,
+    $dark-grey-color 50.26%,
+    $skeleton-background-color 114.84%
+);
+
+$base-font-size-rem: px-to-rem($base-font-size);
 
 @function px-to-rem($px) {
   @return math.div($px, $base-font-size) * 1rem;
