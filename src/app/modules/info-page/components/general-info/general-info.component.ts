@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-
-import { ICovidGeneralData } from 'src/app/models';
+import { ICovidGeneralData, InfoField } from 'src/app/models';
+import { RED_COLORS, BLUE_COLORS, GREEN_COLORS } from 'src/app/modules/info-page/components/map/map.constants';
 
 @Component({
   selector: 'app-general-info',
@@ -10,4 +10,27 @@ import { ICovidGeneralData } from 'src/app/models';
 })
 export class GeneralInfoComponent {
   @Input() data: ICovidGeneralData;
+  @Input() selectedValue: InfoField;
+
+  public readonly infoFields: typeof InfoField = InfoField;
+
+  public getSelectedColor(field: InfoField): string {
+    if (this.selectedValue === field) {
+      // TODO: change colors for better readable
+      switch (this.selectedValue) {
+        case this.infoFields.Infected:
+          return RED_COLORS[RED_COLORS.length - 1];
+        case this.infoFields.Dead:
+          return RED_COLORS[RED_COLORS.length - 1];
+        case this.infoFields.Recovered:
+          return GREEN_COLORS[GREEN_COLORS.length - 1];
+        case this.infoFields.Vaccinated:
+          return BLUE_COLORS[BLUE_COLORS.length - 1];
+        default:
+          return RED_COLORS[RED_COLORS.length - 1];
+      }
+    } else {
+      return '';
+    }
+  }
 }

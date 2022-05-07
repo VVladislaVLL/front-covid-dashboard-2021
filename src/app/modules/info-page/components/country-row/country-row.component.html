@@ -6,6 +6,15 @@
     <span [innerHTML]="country.name | appHighlight: highlight">{{ country.name }}</span>
   </div>
   <div class="country-value">
-    <span> {{country[selectedFieldValue] | number }}</span>
+    <span *ngIf="country.isVisible"> {{country[selectedFieldValue] | number }}</span>
+    <i *ngIf="!country.isVisible" class="material-icons"
+       [appTooltip]="tlp"
+    >
+     info
+    </i>
   </div>
 </div>
+
+<ng-template #tlp>
+  <div class="row__tooltip">Tooltip</div>
+</ng-template>

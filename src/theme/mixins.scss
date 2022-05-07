@@ -33,3 +33,25 @@
 @mixin text-extrabold() {
   font-family: Mulish-ExtraBold, sans-serif;
 }
+
+@mixin scrollbar() {
+  scrollbar-width: thin;
+  scrollbar-color: #E6E8EB #C1C7CD;
+
+  &::-webkit-scrollbar {
+    width: 20px;
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #C1C7CD;
+    border: 8px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box; // this property + border 'cuts down' thumb to appear only 4px in width
+    border-radius: 12px;
+    min-height: 60px;
+  }
+}

@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,5 +7,5 @@ import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
-  @Input() title: string = 'Wold';
+  @Input() title: string = 'World';
 }
