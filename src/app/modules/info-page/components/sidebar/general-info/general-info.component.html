@@ -1,21 +1,21 @@
 <div class="general-info">
  <app-case-block
-   [value]="data.infected"
+   [value]="data.infected | number"
    [name]="'Total Cases'"
    [textColor]="getSelectedColor(infoFields.Infected)"
    ></app-case-block>
  <app-case-block
-   [value]="data.dead"
+   [value]="data.dead | number"
    [name]="'Death'"
    [textColor]="getSelectedColor(infoFields.Dead)"
  ></app-case-block>
  <app-case-block
-   [value]="data.vaccinated"
+   [value]="data.vaccinated | number"
    [name]="'Vaccinated'"
    [textColor]="getSelectedColor(infoFields.Vaccinated)"
  ></app-case-block>
  <app-case-block
-   [value]="data.recovered"
+   [value]="data.recovered | number"
    [name]="'Recoveries'"
    [textColor]="getSelectedColor(infoFields.Recovered)"
  ></app-case-block>

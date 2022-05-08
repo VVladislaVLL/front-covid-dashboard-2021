@@ -1,20 +1,21 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
-import { BehaviorSubject, Subscription, zip } from 'rxjs';
+import { BehaviorSubject, zip } from 'rxjs';
 
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { IBasicCountryInfo, ICovidGeneralData, InfoField } from 'src/app/models';
 import { inOutAnimation } from 'src/app/utils';
+import { BaseComponent } from 'src/app/shared/components/base-component/base-component';
 
 @Component({
   selector: 'app-info-page',
   templateUrl: './info-page.component.html',
   styleUrls: ['./info-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [inOutAnimation],
+  animations: [inOutAnimation()],
 })
-export class InfoPageComponent implements OnInit, OnDestroy {
+export class InfoPageComponent extends BaseComponent implements OnInit, OnDestroy {
   public selectedCountryInfo: IBasicCountryInfo | null = null;
   public isLoadingSelectedCountry: boolean = false;
   public isLoadingCountriesData: boolean = false;
@@ -27,7 +28,6 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     { value: InfoField.Dead, viewValue: 'Dead', selected: false },
   ];
 
-  private subscriptions: Subscription[] = [];
   public isDetailsOpen: boolean = false;
   public openDetailsSubject$ = new BehaviorSubject<string>('');
 
@@ -35,9 +35,9 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     private countriesService: CountriesService,
     private changeDetection: ChangeDetectorRef,
     private router: Router,
-    private route: ActivatedRoute,
   ) {
-    this.subscriptions.push(
+    super();
+    this.subscriptions.add(
       this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
         this.openDetailsSubject$.next(this.router.routerState.snapshot.root.queryParams.id);
       }),
@@ -62,7 +62,6 @@ export class InfoPageComponent implements OnInit, OnDestroy {
   }
 
   public onSelectCountry(iso2: string): void {
-    console.log('onSelectCountry iso2', iso2);
     this.isDetailsOpen = true;
     this.router.navigate(['/info'], {
       queryParams: { id: iso2 },
@@ -78,11 +77,5 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
   public onCountryDetailsClose(): void {
     this.router.navigate(['/info']);
-  }
-
-  public ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => {
-      subscription.unsubscribe();
-    });
   }
 }

@@ -29,14 +29,15 @@ export class CountriesService {
     return this.http.get('http://localhost:3000/covid/general', this.httpOptions) as Observable<ICovidGeneralData>;
   }
 
-  public getChartsCountryData(countryId: string = 'countryId'): Observable<any> {
-    // return of(chartsDataMock);
-    return this.http.get(`http://localhost:3000/overview?country=${countryId}`);
+  public getCountryCovidHistoryByISO2A(iso2: string): Observable<any> {
+    return this.http.get(`http://localhost:3000/covid/history?country=${iso2}`);
   }
 
-  public getFullCountryInfoByISO2A(iso2: string): Observable<any> {
-    // return this.http.get(`http://localhost:3000/overview?country=${iso2a}`);
-    console.log('getFullCountryInfoByISO2A iso2', iso2);
-    return this.http.get(`http://localhost:3000/covid/history?country=${iso2}`);
+  public getCountryCovidOverviewByISO2A(iso2: string): Observable<any> {
+    return this.http.get(`http://localhost:3000/covid/overview?country=${iso2}`);
+  }
+
+  public getGeneralCountryInfoByISO2(iso2: string): Observable<any> {
+    return this.http.get(`http://localhost:3000/countries/${iso2}`);
   }
 }

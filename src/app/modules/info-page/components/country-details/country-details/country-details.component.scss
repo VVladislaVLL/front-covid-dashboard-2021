@@ -11,7 +11,6 @@
 
 .wrapper {
   display: flex;
-  //justify-content: center;
   align-items: center;
   //background-color: $sidebar-background};
   background: black;
@@ -19,6 +18,7 @@
   height: 100%;
   padding: px-to-rem(60px) px-to-rem(90px);
   flex-direction: column;
+  overflow-y: scroll;
 }
 
 .header {
@@ -26,8 +26,9 @@
   display: flex;
   width: 100%;
   padding: px-to-rem(20px) 0;
-  height: px-to-rem(100px);
+  height: fit-content;
   justify-content: space-between;
+  margin-bottom: px-to-rem(30px);
 }
 
 .country-title {
@@ -37,8 +38,9 @@
   justify-content: space-between;
 
   .country-name {
-    font-size: px-to-rem(50px);
+    font-size: px-to-rem(60px);
     font-weight: bold;
+    line-height: px-to-rem(60px);
   }
 
   .country-updated-date {
@@ -47,7 +49,11 @@
 }
 
 .country-today-info {
-  display: flex;
+  min-width: px-to-rem(300px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: px-to-rem(10px);
+  grid-row-gap: px-to-rem(10px);
 }
 
 .nav-bar {
@@ -95,6 +101,57 @@
     .icon {
       font-size: px-to-rem(24px);
     }
+
+    .flag-icon {
+      width: px-to-rem(30px);
+      height: px-to-rem(20px);
+      margin-right: px-to-rem(10px);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+}
+
+app-case-block ::ng-deep {
+  .case-block-reversed {
+    //border: px-to-rem(3px) solid rgba(119, 33, 33, 0.7);
+    //background-color: rgba(124, 34, 34, 0.7);
+    //opacity: 0.7;
+    //.case-title-reversed {
+    //  color: rgba(145, 145, 145, 0.8);
+    //}
+
+    .case-value-reversed {
+      padding-bottom: px-to-rem(5px);
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  .general-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: px-to-rem(15px);
+    grid-row-gap: px-to-rem(15px);
+    min-width: px-to-rem(500px);
+    width: 100%;
   }
 
+  .charts {
+    width: 100%;
+
+    .charts-header {
+      margin: px-to-rem(30px) 0;
+      font-size: px-to-rem(30px);
+      padding: px-to-rem(30px) 0;
+      font-weight: bold;
+    }
+  }
 }
+

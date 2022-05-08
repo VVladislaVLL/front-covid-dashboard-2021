@@ -22,13 +22,14 @@ export class ChartsComponent implements OnChanges {
   @Input() data: IDirtyChartData;
   @Input() dataKey: TChartDataKey = 'infected';
   @Input() isLoadingChartsData: boolean = false;
+  @Input() DEFAULT_BAR_CHART_COLOR?: string = DEFAULT_BAR_CHART_COLOR;
 
   private VerticalBarChart: VerticalBarChart;
 
-  private DRAW_FRAME_MARGINS_PX = { top: 50, left: 200, bottom: 50, right: 200 };
-  private VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX = { top: 50, left: 200, bottom: 50, right: 200 };
+  private DRAW_FRAME_MARGINS_PX = { top: 50, left: 100, bottom: 50, right: 50 };
+  private VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX = { top: 50, left: 100, bottom: 50, right: 50 };
   private X_AXIS_MARGIN_FROM_CHART_PX = 10;
-  private DEFAULT_BAR_CHART_COLOR = DEFAULT_BAR_CHART_COLOR;
+  // private DEFAULT_BAR_CHART_COLOR = DEFAULT_BAR_CHART_COLOR;
   private BASE_FONT_SIZE_PX = 16;
   private MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX = 30;
 
@@ -70,7 +71,8 @@ export class ChartsComponent implements OnChanges {
   }
 
   private getHeight() {
-    return this.element.nativeElement.clientHeight;
+    // return this.element.nativeElement.clientHeight;
+    return 500;
   }
 
   private clearCanvas() {

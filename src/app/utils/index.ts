@@ -13,7 +13,7 @@ export function inOutAnimation(): AnimationTriggerMetadata {
         ':enter',
         [
           style({ transform: 'translateX(100%)' }),
-          animate('0.5s ease-out',
+          animate('0.3s ease-out',
             style({ transform: 'translateX(0)' })),
         ],
       ),
@@ -21,7 +21,7 @@ export function inOutAnimation(): AnimationTriggerMetadata {
         ':leave',
         [
           style({ transform: 'translateX(0)' }),
-          animate('0.5s ease-in',
+          animate('0.3s ease-in',
             style({ transform: 'translateX(100%)' })),
         ],
       ),

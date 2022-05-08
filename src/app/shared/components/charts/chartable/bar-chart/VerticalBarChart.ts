@@ -6,6 +6,7 @@ import {
   NumericScaler, StringifiedScaler,
   SVG,
 } from 'src/app/shared/components/charts/charts.contants';
+// import { DatePipe } from '@angular/common';
 
 export class VerticalBarChart extends BarChart {
   protected X_AXIS_LABELS_PADDINGS_PX = { left: 15, top: 10 };
@@ -18,22 +19,28 @@ export class VerticalBarChart extends BarChart {
   constructor(config: any) {
     super(config);
     this.MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX = config.MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX;
-
-    this.xScale = this.initXScale(this.data, this.frameWidth);
-    this.yScale = this.initYScale(this.data, this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX);
+    this.xScale = this.initXScale(this.transformedData, this.frameWidth);
+    // this.xScale = this.initXScale(this.data, this.frameWidth);
+    // this.yScale = this.initYScale(this.data, this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX);
+    this.yScale = this.initYScale(this.transformedData, this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX);
 
     this.normalizedData = this.normalizeData(
-      this.data,
+      // this.data,
+      this.transformedData,
       this.basedOnMinBarHeightDataNormalizer,
     );
   }
 
   protected initXScale(data: IDirtyChartData, widthPx: number): StringifiedScaler {
+    // const datePipe = new DatePipe('en-US');
     return scaleBand()
       .rangeRound([0, widthPx])
       .paddingInner(0.05)
       .align(0.1)
-      .domain(data.history.map(country => country.day)) as StringifiedScaler;
+      .domain(data.history.map((country) => {
+        // return datePipe.transform(country.day, 'MMM y') as string;
+        return country.day;
+      })) as StringifiedScaler;
   }
 
   protected drawYAxis(svg: SVG, yScale: NumericScaler) {
@@ -163,7 +170,8 @@ export class VerticalBarChart extends BarChart {
       this.frameWidth,
     ]);
     this.yScale = this.initYScale(
-      this.data,
+      this.transformedData,
+      // this.data,
       this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX,
     );
 
@@ -210,9 +218,13 @@ export class VerticalBarChart extends BarChart {
       this.BARS_COLOR_HEX = barsColorHex;
     }
     this.data = data;
-    this.xScale = this.initXScale(this.data, this.frameWidth);
-    this.yScale = this.initYScale(this.data, this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX);
-    this.normalizedData = this.normalizeData(this.data, this.basedOnMinBarHeightDataNormalizer);
+    this.transformedData = this.transformData();
+    // this.xScale = this.initXScale(this.data, this.frameWidth);
+    this.xScale = this.initXScale(this.transformedData, this.frameWidth);
+    this.yScale = this.initYScale(this.transformedData, this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX);
+    // this.yScale = this.initYScale(this.data, this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX);
+    this.normalizedData = this.normalizeData(this.transformedData, this.basedOnMinBarHeightDataNormalizer);
+    // this.normalizedData = this.normalizeData(this.data, this.basedOnMinBarHeightDataNormalizer);
   }
 
   protected basedOnMinBarHeightDataNormalizer = (value: number) => {

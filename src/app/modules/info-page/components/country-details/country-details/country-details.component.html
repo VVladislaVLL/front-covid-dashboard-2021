@@ -4,22 +4,100 @@
     <div class="btn back" (click)="closeDetails()"><i class="material-icons icon">close</i></div>
     <div class="btn world"><i class="material-icons icon">public</i>World</div>
     <div class="btn country">
-      <div class="flag-icon" [ngStyle]="{'background-image': 'url(' + country?.flag + ')'}"></div>
-      Belarus</div>
+      <div class="flag-icon" [ngStyle]="{'background-image': 'url(' + countryFlag + ')'}"></div>
+      {{ countryName }}
+    </div>
   </div>
   <div class="header">
     <div class="country-title">
-      <div class="country-name">Belarus</div>
-      <div class="country-updated-date">12.04.2023</div>
+      <div class="country-name">{{ countryName }}</div>
+      <div class="country-updated-date">{{ countryCovidHistory.lastUpdated | date: 'MMM d, y, h:mm:ss a'}}</div>
     </div>
     <div class="country-today-info">
-      <div class="today-values">
-        <span>2001</span>
-        <span>2321</span>
-      </div>
+      <app-case-block
+        [name]="'New Cases'"
+        [value]="todayNewCases | number"
+      ></app-case-block>
+      <app-case-block
+        [name]="'New Deaths'"
+        [value]="todayNewDeaths | number"
+      ></app-case-block>
     </div>
   </div>
-  <div class="content"></div>
+  <div class="content">
+    <div class="general-info">
+      <app-case-block
+        [name]="'Total Cases'"
+        [value]="totalCases | number"
+      ></app-case-block>
+      <app-case-block
+      [name]="'Deaths'"
+      [value]="totalDeaths | number"
+    ></app-case-block>
+      <app-case-block
+      [name]="'People Vaccinated'"
+      [value]="peopleVaccinated | number"
+    ></app-case-block>
+      <app-case-block
+      [name]="'Active Cases'"
+      [value]="activeCases | number"
+    ></app-case-block>
+      <app-case-block
+      [name]="'Population'"
+      [value]="population | number"
+    ></app-case-block>
+      <app-case-block
+      [name]="'Case Per Million'"
+      [value]="casePerMillion"
+    ></app-case-block>
+      <app-case-block
+      [name]="'Deaths Per Million'"
+      [value]="deathsPerMillion"
+    ></app-case-block>
+      <app-case-block
+        [name]="'Fatality Rate'"
+        [value]="fatalityRate"
+      ></app-case-block>
+      <app-case-block
+      [name]="'Recoveries'"
+      [value]="recoveries | number"
+    ></app-case-block>
+    </div>
+    <div class="charts">
+      <div class="charts-header">
+        Bar Chart: Infected
+      </div>
+      <app-charts
+        [data]="countryCovidOverview"
+        [dataKey]="'infected'"
+        [DEFAULT_BAR_CHART_COLOR]="'#A33636'"
+      ></app-charts>
+      <div class="charts-header">
+        Bar Chart: Recovered
+      </div>
+      <app-charts
+        [data]="countryCovidOverview"
+        [dataKey]="'recovered'"
+        [DEFAULT_BAR_CHART_COLOR]="'#70A32E'"
+      ></app-charts>
+      <div class="charts-header">
+        Bar Chart: Deaths
+      </div>
+      <app-charts
+        [data]="countryCovidOverview"
+        [dataKey]="'dead'"
+        [DEFAULT_BAR_CHART_COLOR]="'#A33636'"
+      ></app-charts>
+      <div class="charts-header">
+        Bar Chart: Vaccinated
+      </div>
+      <app-charts
+        [data]="countryCovidOverview"
+        [dataKey]="'vaccinated'"
+        [DEFAULT_BAR_CHART_COLOR]="'#1C82FF'"
+      ></app-charts>
+    </div>
+  </div>
   </ng-container>
 </div>
 

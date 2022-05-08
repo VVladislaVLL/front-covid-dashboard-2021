@@ -1,4 +1,13 @@
-<div class="case-block" [ngStyle]="{ color: textColor }">
-  <span class="case-title">{{ name }}</span>
-  <span class="case-value">{{ value | number}}</span>
-</div>
+<ng-container *ngIf="isReversed; else reversed">
+  <div class="case-block" [ngStyle]="{ color: textColor }">
+    <span class="case-title">{{ name }}</span>
+    <span class="case-value">{{ value }}</span>
+  </div>
+</ng-container>
+
+<ng-template #reversed>
+  <div class="case-block-reversed" [ngStyle]="{ color: textColor }">
+    <span class="case-value-reversed">{{ value }}</span>
+    <span class="case-title-reversed">{{ name }}</span>
+  </div>
+</ng-template>

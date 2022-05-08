@@ -1,13 +1,17 @@
 @import "src/theme/core-variables";
 
+.case-block-reversed,
 .case-block {
   border-radius: px-to-rem(5px);
   background: $dark-grey-color;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
   padding: px-to-rem(16px);
+}
+
+.case-block {
+  align-items: flex-start;
 
   .case-title {
     font-size: px-to-rem(20px);
@@ -17,4 +21,18 @@
     font-size: px-to-rem(16px);
   }
 }
+
+.case-block-reversed {
+  align-items: center;
+
+  .case-title-reversed {
+    font-size: px-to-rem(16px);
+    color: rgba(145, 145, 145, 0.8);
+  }
+
+  .case-value-reversed {
+    font-size: px-to-rem(20px);
+  }
+}
+
 

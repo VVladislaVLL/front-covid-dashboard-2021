@@ -7,7 +7,8 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaseBlockComponent {
-  @Input() value: number = 10000;
+  @Input() value: string | number | null;
   @Input() name: string = 'total';
   @Input() textColor: string = '';
+  @Input() isReversed?: boolean = false;
 }

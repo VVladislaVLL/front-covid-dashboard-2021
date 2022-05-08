@@ -4,6 +4,7 @@ import {
   StringifiedScaler,
   SVG, TChartDataKey,
 } from 'src/app/shared/components/charts/charts.contants';
+import { DatePipe } from '@angular/common';
 
 export interface IBaseBarChartConfig {
   svg: SVG;
@@ -27,6 +28,7 @@ export class BarChart {
   protected X_AXIS_MARGIN_FROM_CHART_PX: number;
   protected BASE_FONT_SIZE_PX: number;
   protected BARS_COLOR_HEX: string;
+  protected transformedData: IDirtyChartData;
 
   constructor(config: any) {
     this.svg = config.svg;
@@ -38,6 +40,14 @@ export class BarChart {
     this.X_AXIS_MARGIN_FROM_CHART_PX = config.X_AXIS_MARGIN_FROM_CHART_PX;
     this.BASE_FONT_SIZE_PX = config.BASE_FONT_SIZE_PX;
     this.BARS_COLOR_HEX = config.BARS_COLOR_HEX;
+    this.transformedData = this.transformData();
+  }
+
+  protected transformData(): IDirtyChartData {
+    const datePipe = new DatePipe('en-US');
+    return { ...this.data, history: this.data.history.map((record) => {
+      return { ...record, day: datePipe.transform(record.day, 'MMM y') as string };
+    }) };
   }
 
   protected drawXAxisWrapperIfNeeded(
