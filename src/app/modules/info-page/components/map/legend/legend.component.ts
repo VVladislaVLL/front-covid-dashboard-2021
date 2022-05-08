@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { InfoField } from 'src/app/models';
-import { getColorPalette } from 'src/app/modules/info-page/components/map/map.helpers';
+import { getColorPalette } from 'src/app/modules/info-page/components/map/map/map.helpers';
 
 @Component({
   selector: 'app-legend',

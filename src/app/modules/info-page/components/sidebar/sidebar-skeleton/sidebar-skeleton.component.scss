@@ -1,4 +1,4 @@
-@import "src/theme/core-variables";
+@import "../../../../../../theme/core-variables";
 
 .wrapper {
   width: 100%;
@@ -24,7 +24,7 @@
 }
 
 .skeleton-search-input {
-  margin: px-to-rem(30px) 0;
+  margin: px-to-rem(40px) 0;
 }
 
 .general-skeleton-info {

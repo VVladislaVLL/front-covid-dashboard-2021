@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from 'src/app/shared/shared.module';
-import { CountryRowComponent } from './components/country-row/country-row.component';
-import { GeneralInfoComponent } from './components/general-info/general-info.component';
-import { MapComponent } from './components/map/map.component';
-import { SearchComponent } from './components/search/search.component';
+import { CountryRowComponent } from './components/sidebar/country-row/country-row.component';
+import { GeneralInfoComponent } from './components/sidebar/general-info/general-info.component';
+import { MapComponent } from './components/map/map/map.component';
+import { SearchComponent } from './components/sidebar/search/search.component';
 import { InfoPageComponent } from './components/info-page/info-page.component';
-import { CountriesListComponent } from './components/countries-list/countries-list.component';
-import { LegendComponent } from './components/legend/legend.component';
-import { CountryTooltipComponent } from './components/country-tooltip/country-tooltip.component';
-import { SidebarSkeletonComponent } from './components/sidebar-skeleton/sidebar-skeleton.component';
-
+import { CountriesListComponent } from './components/sidebar/countries-list/countries-list.component';
+import { LegendComponent } from './components/map/legend/legend.component';
+import { CountryTooltipComponent } from './components/map/country-tooltip/country-tooltip.component';
+import { SidebarSkeletonComponent } from './components/sidebar/sidebar-skeleton/sidebar-skeleton.component';
+import { InfoPageRoutingModule } from './info-page-routing.module';
+import { CountryDetailsComponent } from './components/country-details/country-details/country-details.component';
 @NgModule({
   declarations: [
     CountryRowComponent,
@@ -24,12 +25,14 @@ import { SidebarSkeletonComponent } from './components/sidebar-skeleton/sidebar-
     LegendComponent,
     CountryTooltipComponent,
     SidebarSkeletonComponent,
+    CountryDetailsComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    InfoPageRoutingModule,
   ],
   exports: [
     CountryRowComponent,

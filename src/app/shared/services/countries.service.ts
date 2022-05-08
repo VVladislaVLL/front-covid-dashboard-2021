@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { IBasicCountryInfo, ICovidGeneralData } from 'src/app/models';
-import { chartsDataMock } from './countryService.mock';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +32,9 @@ export class CountriesService {
   public getChartsCountryData(countryId: string = 'countryId'): Observable<any> {
     // return of(chartsDataMock);
     return this.http.get(`http://localhost:3000/overview?country=${countryId}`);
+  }
+
+  public getFullCountryInfoByISO2A(iso2a: string): Observable<any> {
+    return this.http.get(`http://localhost:3000/overview?country=${iso2a}`);
   }
 }

@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { take } from 'rxjs/operators';
-import { zip } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, take } from 'rxjs/operators';
+import { BehaviorSubject, Subscription, zip } from 'rxjs';
 
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { IBasicCountryInfo, ICovidGeneralData, InfoField } from 'src/app/models';
@@ -11,7 +12,7 @@ import { IBasicCountryInfo, ICovidGeneralData, InfoField } from 'src/app/models'
   styleUrls: ['./info-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InfoPageComponent implements OnInit {
+export class InfoPageComponent implements OnInit, OnDestroy {
   public selectedCountryInfo: IBasicCountryInfo | null = null;
   public isLoadingSelectedCountry: boolean = false;
   public isLoadingCountriesData: boolean = false;
@@ -24,10 +25,29 @@ export class InfoPageComponent implements OnInit {
     { value: InfoField.Dead, viewValue: 'Dead', selected: false },
   ];
 
+  private subscriptions: Subscription[] = [];
+  public isDetailsOpen: boolean = false;
+  public openDetailsSubject$ = new BehaviorSubject<string>('');
+
   constructor(
     private countriesService: CountriesService,
     private changeDetection: ChangeDetectorRef,
-  ) { }
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+    this.subscriptions.push(
+      this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+        const id = this.router.routerState.snapshot.root.queryParams.id;
+        if (id) {
+          this.isDetailsOpen = true;
+          this.openDetailsSubject$.next(this.router.routerState.snapshot.root.queryParams.id);
+        } else {
+          this.isDetailsOpen = false;
+          this.changeDetection.markForCheck();
+        }
+      }),
+    );
+  }
 
   get selectedOption(): { value: InfoField; viewValue: string; selected: boolean; } {
     return this.selectedOptions.find(option => option.selected) || this.selectedOptions[0];
@@ -44,23 +64,14 @@ export class InfoPageComponent implements OnInit {
       this.isLoadingCountriesData = false;
       this.changeDetection.detectChanges();
     });
-    // this.countriesService.getCountriesData().pipe(take(1)).subscribe((data: IBasicCountryInfo[]) => {
-    //   this.countriesData = data;
-    //   this.isLoadingCountriesData = false;
-    //   this.changeDetection.detectChanges();
-    // });
-
   }
 
   public onSelectCountry(iso2: string): void {
     console.log('onSelectCountry iso2', iso2);
-    // this.isLoadingSelectedCountry = true;
-    // this.countriesService.getCountryBasicInfo(iso2)
-    //   .pipe(take(1))
-    //   .subscribe((countryBasicInfo: IBasicCountryInfo) => {
-    //     this.selectedCountryInfo = countryBasicInfo;
-    //     this.isLoadingSelectedCountry = false;
-    //   });
+    this.isDetailsOpen = true;
+    this.router.navigate(['/info'], {
+      queryParams: { id: iso2 },
+    });
   }
 
   public isEnoughDataToDisplayCountryInfoSidebar(): boolean {
@@ -68,5 +79,11 @@ export class InfoPageComponent implements OnInit {
   }
 
   public handleOptionChanges(option: string): void {
+  }
+
+  public ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }

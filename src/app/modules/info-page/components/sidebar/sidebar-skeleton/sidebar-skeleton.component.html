@@ -1,18 +1,18 @@
 <div class="wrapper">
   <div class="sidebar-common">
     <div class="sidebar-header">
-      <app-skeleton-line [widthPx]="100"></app-skeleton-line>
-      <app-skeleton-circle [diameterPx]="16"></app-skeleton-circle>
+      <app-skeleton-line [widthPx]="100" [heightPx]="15"></app-skeleton-line>
+<!--      <app-skeleton-circle [diameterPx]="16"></app-skeleton-circle>-->
     </div>
     <div class="sidebar-content">
       <div class="general">
         <div class="general-skeleton-info">
-          <app-skeleton-line *ngFor="let i of 4 | appTimes" [heightPx]="70"></app-skeleton-line>
+          <app-skeleton-line *ngFor="let i of 4 | appTimes" [heightPx]="93"></app-skeleton-line>
         </div>
       </div>
       <div class="skeleton-search">
           <div class="skeleton-search-input">
-            <app-skeleton-line [widthPx]="150" [heightPx]="24"></app-skeleton-line>
+            <app-skeleton-line [heightPx]="24"></app-skeleton-line>
           </div>
           <div class="skeleton-country-list">
             <div class="skeleton-country-list-header">

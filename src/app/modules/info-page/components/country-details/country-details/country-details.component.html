@@ -1,0 +1,32 @@
+<div class="wrapper">
+  <div class="nav-bar">
+    <div class="btn back"><-</div>
+    <div class="btn world">World</div>
+    <div class="btn country">Belarus</div>
+  </div>
+  <div class="header">
+    <div>Icon</div>
+    <div class="country-title">
+      <div class="country-flag">FLAG</div>
+      <div class="country-name">Belarus</div>
+    </div>
+    <div class="country-today-info">
+      <div class="today-values">
+        <span>2001</span>
+        <span>2321</span>
+      </div>
+      <span class="last-update">
+        {{ date | date }}
+      </span>
+    </div>
+  </div>
+  <div class="content">
+    <div class="general-country-info">
+      <app-case-block [name]="'Infected'" [value]="200"></app-case-block>
+      <app-case-block [name]="'Vaccinated'" [value]="300"></app-case-block>
+      <app-case-block [name]="'Sick'" [value]="340"></app-case-block>
+      <app-case-block [name]="'Dead'" [value]="10"></app-case-block>
+      <app-case-block [name]="'Recovered'" [value]="10000"></app-case-block>
+    </div>
+  </div>
+</div>

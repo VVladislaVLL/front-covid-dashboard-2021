@@ -3,7 +3,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { BrowserDetectInfo } from 'browser-detect/dist/types/browser-detect.interface';
 import browser from 'browser-detect';
 import { BaseTooltip } from './base-tooltip';
-import { PortalPlacement, PortalThemes } from '../../enums';
+import { PortalPlacement, PortalThemes } from 'src/app/shared/enums';
 
 @Directive({
   selector: '[appTooltip]',

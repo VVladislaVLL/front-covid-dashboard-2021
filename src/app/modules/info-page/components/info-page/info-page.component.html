@@ -32,8 +32,11 @@
       (selectCountry)="onSelectCountry($event)"
     ></app-map>
   </div>
+  <ng-container *ngIf="isDetailsOpen">
+    <ng-container *ngTemplateOutlet="countryDetails"></ng-container>
+  </ng-container>
 </div>
 
-<!--<ng-template #loading>-->
-<!--  <app-spinner></app-spinner>-->
-<!--</ng-template>-->
+<ng-template #countryDetails>
+ <app-country-details [iso2]="$any(openDetailsSubject$ | async)"></app-country-details>
+</ng-template>

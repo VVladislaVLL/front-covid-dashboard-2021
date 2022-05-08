@@ -18,7 +18,7 @@ import { CountriesService } from 'src/app/shared/services/countries.service';
 import { IBasicCountryInfo, InfoField } from 'src/app/models';
 import { getColor } from './map.helpers';
 import { GEO_JSON_ISO_A2, GEO_JSON_NAME, TITLE_TEMPLATE } from './map.constants';
-import { CountryTooltipComponent } from 'src/app/modules/info-page/components/country-tooltip/country-tooltip.component';
+import { CountryTooltipComponent } from 'src/app/modules/info-page/components/map/country-tooltip/country-tooltip.component';
 
 @Component({
   selector: 'app-map',
