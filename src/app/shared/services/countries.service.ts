@@ -34,7 +34,9 @@ export class CountriesService {
     return this.http.get(`http://localhost:3000/overview?country=${countryId}`);
   }
 
-  public getFullCountryInfoByISO2A(iso2a: string): Observable<any> {
-    return this.http.get(`http://localhost:3000/overview?country=${iso2a}`);
+  public getFullCountryInfoByISO2A(iso2: string): Observable<any> {
+    // return this.http.get(`http://localhost:3000/overview?country=${iso2a}`);
+    console.log('getFullCountryInfoByISO2A iso2', iso2);
+    return this.http.get(`http://localhost:3000/covid/history?country=${iso2}`);
   }
 }

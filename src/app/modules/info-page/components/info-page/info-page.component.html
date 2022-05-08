@@ -38,5 +38,7 @@
 </div>
 
 <ng-template #countryDetails>
- <app-country-details [iso2]="$any(openDetailsSubject$ | async)"></app-country-details>
+ <app-country-details
+   [iso2]="$any(openDetailsSubject$ | async)"
+ ></app-country-details>
 </ng-template>

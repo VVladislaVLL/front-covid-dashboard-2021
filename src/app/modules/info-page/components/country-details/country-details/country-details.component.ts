@@ -5,7 +5,7 @@ import {
   ChangeDetectorRef,
   Input,
   OnChanges,
-  SimpleChanges,
+  SimpleChanges, Output, EventEmitter,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -41,8 +41,12 @@ import { CountriesService } from 'src/app/shared/services/countries.service';
 })
 export class CountryDetailsComponent implements OnChanges {
   @Input() iso2: string;
+
+  public isLoading: boolean = true;
+  public country: any;
+
   private paramsSubscription: Subscription;
-  private country: any;
+
   constructor(
     private countriesService: CountriesService,
     protected changeDetector: ChangeDetectorRef,
@@ -50,11 +54,15 @@ export class CountryDetailsComponent implements OnChanges {
     protected route: ActivatedRoute,
   ) { }
 
-  public date = Date.now();
-  // private subscriptions: Subscription[] = [];
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.iso2 && changes.iso2.currentValue) {
-      console.log('iso2', this.iso2);
+      this.isLoading = true;
+      this.countriesService.getFullCountryInfoByISO2A(this.iso2).subscribe((countryInfo) => {
+        console.log('this.country', countryInfo);
+        this.country = countryInfo;
+        this.isLoading = false;
+        this.changeDetector.markForCheck();
+      });
     }
   }
 
@@ -77,7 +85,9 @@ export class CountryDetailsComponent implements OnChanges {
   //   // }),
   //   // );
   // }
-
+  closeDetails(): void {
+    this.router.navigate(['/info']);
+  }
   // public ngOnDestroy(): void {
   //   this.subscriptions.forEach((subscription) => {
   //     subscription.unsubscribe();
