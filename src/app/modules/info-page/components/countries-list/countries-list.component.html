@@ -8,6 +8,7 @@
   <div class="countries-list">
     <ul class="countries">
       <li
+        class="countries-list__country"
         *ngFor="let country of countriesToDisplay; let i = index"
         (click)="selectCountry.emit(country.iso2)"
       >

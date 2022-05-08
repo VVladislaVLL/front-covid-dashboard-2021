@@ -9,4 +9,5 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 export class CaseBlockComponent {
   @Input() value: number = 10000;
   @Input() name: string = 'total';
+  @Input() textColor: string = '';
 }

@@ -22,7 +22,6 @@ export class InfoPageComponent implements OnInit {
     { value: InfoField.Vaccinated, viewValue: 'Vaccinated', selected: false },
     { value: InfoField.Recovered, viewValue: 'Recovered', selected: false },
     { value: InfoField.Dead, viewValue: 'Dead', selected: false },
-    { value: InfoField.Sick, viewValue: 'Sick', selected: false },
   ];
 
   constructor(

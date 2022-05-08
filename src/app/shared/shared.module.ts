@@ -16,26 +16,31 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SearchInputComponent } from './components/search-input/search-input.component';
 import { ChartsComponent } from './components/charts/charts.component';
 import { SelectComponent } from './components/select/select.component';
-
 import { SkeletonWrapperComponent } from './components/skeleton/skeleton-wrapper/skeleton-wrapper.component';
 import { SkeletonLineComponent } from './components/skeleton/shapes/skeleton-line/skeleton-line.component';
 import { SkeletonCircleComponent } from './components/skeleton/shapes/skeleton-circle/skeleton-circle.component';
+import { TooltipDirective } from './directives/tooltip/tooltip.directive';
+import { PortalComponent } from './components/portal/portal.component';
+
+const declarations = [
+  SpinnerComponent,
+  CaseBlockComponent,
+  SidebarComponent,
+  SearchInputComponent,
+  ChartsComponent,
+  SelectComponent,
+  HighlightPipe,
+  TimesPipe,
+  PxToRemPipe,
+  SkeletonWrapperComponent,
+  SkeletonLineComponent,
+  SkeletonCircleComponent,
+  TooltipDirective,
+  PortalComponent,
+];
 
 @NgModule({
-  declarations: [
-    SpinnerComponent,
-    CaseBlockComponent,
-    SidebarComponent,
-    SearchInputComponent,
-    ChartsComponent,
-    SelectComponent,
-    HighlightPipe,
-    TimesPipe,
-    PxToRemPipe,
-    SkeletonWrapperComponent,
-    SkeletonLineComponent,
-    SkeletonCircleComponent,
-  ],
+  declarations: [...declarations],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -45,19 +50,6 @@ import { SkeletonCircleComponent } from './components/skeleton/shapes/skeleton-c
     MatInputModule,
     MatSelectModule,
   ],
-  exports: [
-    SpinnerComponent,
-    CaseBlockComponent,
-    SidebarComponent,
-    SearchInputComponent,
-    ChartsComponent,
-    SelectComponent,
-    HighlightPipe,
-    TimesPipe,
-    PxToRemPipe,
-    SkeletonWrapperComponent,
-    SkeletonLineComponent,
-    SkeletonCircleComponent,
-  ],
+  exports: [...declarations],
 })
 export class SharedModule { }

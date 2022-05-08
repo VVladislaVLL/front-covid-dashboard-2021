@@ -1,0 +1,21 @@
+@import "src/theme/core-variables";
+
+.portal {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px 0 transparentize(#000, 0.84);
+
+  &_light {
+    background-color: #fff;
+  }
+
+  &_dark {
+    color: #fff;
+    background-color: $dark-tooltip-grey-color;
+  }
+
+  &-content {
+    padding: 4px 8px;
+  }
+}

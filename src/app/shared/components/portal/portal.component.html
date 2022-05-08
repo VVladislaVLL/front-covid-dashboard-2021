@@ -1,0 +1,4 @@
+<div class="portal portal_{{theme}}">
+  <div class="portal-content" *ngIf="text">{{text}}</div>
+  <ng-container *ngIf="view" [ngTemplateOutlet]="view" [ngTemplateOutletContext]="{close: closingFn}"></ng-container>
+</div>

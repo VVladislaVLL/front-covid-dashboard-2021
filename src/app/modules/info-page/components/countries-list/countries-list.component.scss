@@ -1,4 +1,5 @@
 @import "src/theme/core-variables";
+@import "src/theme/mixins";
 
 .header {
   display: grid;
@@ -11,7 +12,15 @@
 
 .countries-list {
   //height: 100%;
+  @include scrollbar();
   height: 420px; // TODO: add adaptive height
   max-height: 100%;
   overflow-y: scroll;
+
+  &__country {
+    &:hover {
+      cursor: pointer;
+      background-color: #{$sidebar-background}50;
+    }
+  }
 }

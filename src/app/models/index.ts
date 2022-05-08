@@ -7,10 +7,11 @@ export interface IBasicCountryInfo {
   flag: string;
   infected: number;
   sick: number;
-  dead: number
+  dead: number;
   recovered: number;
   vaccinated: number;
   lastUpdated: Date | string;
+  isVisible: boolean;
 }
 
 export interface ICovidGeneralData extends Pick<

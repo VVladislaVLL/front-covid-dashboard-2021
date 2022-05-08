@@ -4,6 +4,7 @@
   display: flex;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 
   .sidebar-view {
     position: relative;
@@ -22,5 +23,4 @@
 }
 
 .search {
-  overflow: scroll;
 }

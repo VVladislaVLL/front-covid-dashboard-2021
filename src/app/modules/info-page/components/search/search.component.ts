@@ -1,4 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 
 import { IBasicCountryInfo, InfoField } from 'src/app/models';
 
@@ -8,7 +16,7 @@ import { IBasicCountryInfo, InfoField } from 'src/app/models';
   styleUrls: ['./search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnChanges {
   @Input() countries: IBasicCountryInfo[] = [];
   @Input() selectedOption: { value: InfoField; viewValue: string; selected: boolean };
 
@@ -18,14 +26,18 @@ export class SearchComponent implements OnInit {
   public searchValue: string = '';
   public countriesToDisplay: IBasicCountryInfo[] = [];
 
-  public ngOnInit(): void {
-    this.countriesToDisplay = this.updateCountriesToDisplay();
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.selectedOption && changes.selectedOption.currentValue) {
+      this.countriesToDisplay = this.updateCountriesToDisplay();
+    }
   }
 
   public onSearch(searchValue: string): void {
     // this.countriesToDisplay = this.updateCountriesToDisplay();
     this.searchValue = searchValue;
-    this.countriesToDisplay = this.countries.filter((country) => Object.keys(country).length > 0 && (country?.name)?.toLocaleLowerCase().includes(searchValue));
+    this.countriesToDisplay = this.updateCountriesToDisplay(
+      (country: IBasicCountryInfo) => Object.keys(country).length > 0 && (country?.name)?.toLocaleLowerCase().includes(searchValue),
+    );
     // this.countriesToDisplay = this.updateCountriesToDisplay(this.getSearchCallback(searchValue));
   }
   //
@@ -36,10 +48,28 @@ export class SearchComponent implements OnInit {
   }
 
   private updateCountriesToDisplay(filterCallback?: (country: IBasicCountryInfo) => boolean): IBasicCountryInfo[] {
-    if (filterCallback != null) {
-      return this.countries.filter((country) => filterCallback(country));
+    if (!filterCallback) {
+      filterCallback = (country: IBasicCountryInfo) => Object.keys(country).length > 0;
     }
-    return this.countries.filter(country => Object.keys(country).length > 0);
+
+    return this.sortCountriesBySelectedOption(this.countries.filter(filterCallback));
   }
 
+  private sortCountriesBySelectedOption(countries: IBasicCountryInfo[]): IBasicCountryInfo[] {
+    const notVisibleCountries: IBasicCountryInfo[] = [];
+    const visibleCountries: IBasicCountryInfo[] = [];
+
+    countries.forEach((country) => {
+      if (country.isVisible) {
+        visibleCountries.push(country);
+      } else {
+        notVisibleCountries.push(country);
+      }
+    });
+
+    return [
+      ...visibleCountries.sort((a, b) => (b[this.selectedOption.value] || 0) - (a[this.selectedOption.value] || 0)),
+      ...notVisibleCountries.sort((a, b) => a.name.localeCompare(b.name)),
+    ];
+  }
 }

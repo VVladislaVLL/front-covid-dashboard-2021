@@ -12,10 +12,25 @@ body {
   font-size: px-to-rem($base-font-size);
 }
 
-
 .highlight-text {
   color: $red-color;
 }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.overlay {
+  display: block;
+  animation: animation-opacity 0.3s ease;
+  z-index: 100;
+}
+
+@keyframes animation-opacity {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
