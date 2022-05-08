@@ -5,12 +5,14 @@ import { BehaviorSubject, Subscription, zip } from 'rxjs';
 
 import { CountriesService } from 'src/app/shared/services/countries.service';
 import { IBasicCountryInfo, ICovidGeneralData, InfoField } from 'src/app/models';
+import { inOutAnimation } from 'src/app/utils';
 
 @Component({
   selector: 'app-info-page',
   templateUrl: './info-page.component.html',
   styleUrls: ['./info-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [inOutAnimation],
 })
 export class InfoPageComponent implements OnInit, OnDestroy {
   public selectedCountryInfo: IBasicCountryInfo | null = null;
@@ -37,14 +39,7 @@ export class InfoPageComponent implements OnInit, OnDestroy {
   ) {
     this.subscriptions.push(
       this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-        const id = this.router.routerState.snapshot.root.queryParams.id;
-        if (id) {
-          this.isDetailsOpen = true;
-          this.openDetailsSubject$.next(this.router.routerState.snapshot.root.queryParams.id);
-        } else {
-          this.isDetailsOpen = false;
-          this.changeDetection.markForCheck();
-        }
+        this.openDetailsSubject$.next(this.router.routerState.snapshot.root.queryParams.id);
       }),
     );
   }
@@ -79,6 +74,10 @@ export class InfoPageComponent implements OnInit, OnDestroy {
   }
 
   public handleOptionChanges(option: string): void {
+  }
+
+  public onCountryDetailsClose(): void {
+    this.router.navigate(['/info']);
   }
 
   public ngOnDestroy(): void {

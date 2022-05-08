@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import {
   Component,
   ChangeDetectionStrategy,
@@ -7,7 +6,6 @@ import {
   OnChanges,
   SimpleChanges, Output, EventEmitter,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { CountriesService } from 'src/app/shared/services/countries.service';
@@ -16,31 +14,11 @@ import { CountriesService } from 'src/app/shared/services/countries.service';
   selector: 'app-country-details',
   templateUrl: './country-details.component.html',
   styleUrls: ['./country-details.component.scss'],
-  animations: [
-    trigger('slideOnHideAnimation', [
-      state('right', style({ transform: 'translate3d(100%, 0, 0)', visibility: 'hidden' })),
-      state('left', style({ transform: 'translate3d(-100%, 0, 0)', visibility: 'hidden' })),
-      state('in', style({ transform: 'translate3d(0%, 0, 0)' })),
-
-      transition('right->in', animate('300ms ease-out')),
-      transition('in->right', animate('300ms ease-out')),
-      transition('left->in', animate('300ms ease-out')),
-      transition('in->left', animate('300ms ease-out')),
-    ]),
-    trigger('slideOnDestroyAnimation', [
-      state('right', style({ transform: 'translate3d(0%, 0, 0)' })),
-      state('left', style({ transform: 'translate3d(0%, 0, 0)' })),
-
-      transition('void->right', [style({ transform: 'translate3d(100%, 0, 0)' }), animate('300ms ease-out')]),
-      transition('right->void', [animate('300ms ease-out', style({ transform: 'translate3d(100%, 0, 0)' }))]),
-      transition('void->left', [style({ transform: 'translate3d(-100%, 0, 0)' }), animate('300ms ease-out')]),
-      transition('left->void', [animate('300ms ease-out', style({ transform: 'translate3d(-100%, 0, 0)' }))]),
-    ]),
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CountryDetailsComponent implements OnChanges {
   @Input() iso2: string;
+  @Output() onClose = new EventEmitter<void>();
 
   public isLoading: boolean = true;
   public country: any;
@@ -50,8 +28,6 @@ export class CountryDetailsComponent implements OnChanges {
   constructor(
     private countriesService: CountriesService,
     protected changeDetector: ChangeDetectorRef,
-    protected router: Router,
-    protected route: ActivatedRoute,
   ) { }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -86,7 +62,7 @@ export class CountryDetailsComponent implements OnChanges {
   //   // );
   // }
   closeDetails(): void {
-    this.router.navigate(['/info']);
+    this.onClose.emit();
   }
   // public ngOnDestroy(): void {
   //   this.subscriptions.forEach((subscription) => {
