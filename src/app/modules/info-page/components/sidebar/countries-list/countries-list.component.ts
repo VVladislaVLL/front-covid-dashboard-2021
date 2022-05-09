@@ -14,4 +14,10 @@ export class CountriesListComponent {
   @Input() selectedField: { value: InfoField; viewValue: string; selected: boolean };
 
   @Output() selectCountry = new EventEmitter<string>();
+
+  public onClick(country: IBasicCountryInfo): void {
+    if (country.isVisible) {
+      this.selectCountry.emit(country.iso2);
+    }
+  }
 }

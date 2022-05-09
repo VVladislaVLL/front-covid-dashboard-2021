@@ -1,4 +1,5 @@
 @import 'src/theme/core-variables';
+@import 'src/theme/mixins';
 
 :host {
   position: fixed;
@@ -19,6 +20,8 @@
   padding: px-to-rem(60px) px-to-rem(90px);
   flex-direction: column;
   overflow-y: scroll;
+
+  @include scrollbar();
 }
 
 .header {
@@ -45,6 +48,7 @@
 
   .country-updated-date {
     font-size: px-to-rem(16px);
+    margin-top: px-to-rem(10px);
   }
 }
 
@@ -93,6 +97,10 @@
     &.world {
       font-weight: bold;
       border-radius: px-to-rem(5px);
+      &:hover {
+        opacity: 1;
+        cursor: default;
+      }
       i {
         margin-right: px-to-rem(10px);
       }
@@ -151,6 +159,10 @@ app-case-block ::ng-deep {
       font-size: px-to-rem(30px);
       padding: px-to-rem(30px) 0;
       font-weight: bold;
+
+      i {
+        cursor: default;
+      }
     }
   }
 }

@@ -45,6 +45,10 @@ export class CountryDetailsComponent extends BaseComponent implements OnChanges 
     return this.basicCountryData?.flag;
   }
 
+  public getTooltipText(field: string): string {
+    return `There are no recorded cases or this country doesn't provide information about ${field} from COVID-19`;
+  }
+
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.iso2 && changes.iso2.currentValue) {
       this.isLoading = true;

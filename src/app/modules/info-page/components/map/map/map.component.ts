@@ -169,14 +169,19 @@ export class MapComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private zoomToCountry(e: L.LayerEvent): void {
+    const iso2: string = e.sourceTarget.feature.properties[GEO_JSON_ISO_A2];
+    const country = this.getCountryByISO2(iso2);
     this.map.fitBounds(e.target.getBounds());
-    this.selectCountry.emit(e.sourceTarget.feature.properties[GEO_JSON_ISO_A2]);
+
+    if (country?.isVisible) {
+      this.selectCountry.emit(iso2);
+    }
   }
 
   private getCountryByISO2(iso2: string, geoJSONCountry?: any):IBasicCountryInfo | null {
     const currentCountry = this.covidData.find((country: IBasicCountryInfo) => country.iso2 === iso2);
     return currentCountry == null
-      ? this.covidData.find((country) => (country.name === geoJSONCountry.properties[GEO_JSON_NAME])) || null
+      ? this.covidData.find((country) => (country.name === geoJSONCountry?.properties[GEO_JSON_NAME])) || null
       : currentCountry;
   }
 

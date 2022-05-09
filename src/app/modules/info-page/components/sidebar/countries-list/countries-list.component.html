@@ -8,9 +8,10 @@
   <div class="countries-list">
     <ul class="countries">
       <li
-        class="countries-list__country"
         *ngFor="let country of countriesToDisplay; let i = index"
-        (click)="selectCountry.emit(country.iso2)"
+        class="countries-list__country"
+        [class.countries-list__country_disabled]="!country.isVisible"
+        (click)="onClick(country)"
       >
         <app-country-row
           [rowNumber]="i + 1"

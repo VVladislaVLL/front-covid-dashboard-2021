@@ -8,26 +8,31 @@
       <div class="flag" [ngStyle]="{'background-image': 'url(' + countryInfo.flag + ')'}"></div>
     </div>
     <div class="info">
-      <div class="info-field">
-        <span class="info-name">Infected:</span>
-        <span class="info-value">{{countryInfo.infected | number}}</span>
-      </div>
-      <div class="info-field">
-        <span class="info-name">Vaccinated:</span>
-        <span class="info-value">{{countryInfo.vaccinated | number}}</span>
-      </div>
-      <div class="info-field">
-        <span class="info-name">Dead:</span>
-        <span class="info-value">{{countryInfo.dead | number}}</span>
-      </div>
-      <div class="info-field">
-        <span class="info-name">Recovered:</span>
-        <span class="info-value">{{countryInfo.recovered | number}}</span>
-      </div>
-      <div class="info-field">
-        <span class="info-name">Sick:</span>
-        <span class="info-value">{{countryInfo.sick | number}}</span>
-      </div>
+      <ng-container *ngIf="countryInfo.isVisible">
+        <div class="info-field">
+          <span class="info-name">Infected:</span>
+          <span class="info-value">{{countryInfo.infected | number}}</span>
+        </div>
+        <div class="info-field">
+          <span class="info-name">Vaccinated:</span>
+          <span class="info-value">{{countryInfo.vaccinated | number}}</span>
+        </div>
+        <div class="info-field">
+          <span class="info-name">Dead:</span>
+          <span class="info-value">{{countryInfo.dead | number}}</span>
+        </div>
+        <div class="info-field">
+          <span class="info-name">Recovered:</span>
+          <span class="info-value">{{countryInfo.recovered | number}}</span>
+        </div>
+        <div class="info-field">
+          <span class="info-name">Sick:</span>
+          <span class="info-value">{{countryInfo.sick | number}}</span>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!countryInfo.isVisible">
+        <div class="info-field">This country doesn't provide data for COVID-19</div>
+      </ng-container>
     </div>
   </div>
 </div>
