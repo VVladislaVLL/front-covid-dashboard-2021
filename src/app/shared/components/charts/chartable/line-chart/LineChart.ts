@@ -1,14 +1,34 @@
-import { axisBottom, axisLeft, scaleBand, scaleLinear, select, transition } from 'd3';
-
-import { BarChart } from './BarChart';
 import {
-  ICountryHistoryData,
-  IDirtyChartData, INormalizeCountryHistoryData, INormalizedChartsData,
-  NumericScaler, StringifiedScaler,
-  SVG,
+  IDirtyChartData, INormalizedChartsData,
+  NumericScaler,
+  SVG, TChartDataKey,
 } from 'src/app/shared/components/charts/charts.contants';
+import { axisBottom, axisLeft, line, scaleLinear, scaleTime } from 'd3';
 
-export class VerticalBarChart extends BarChart {
+export interface IBaseBarChartConfig {
+  svg: SVG;
+  frameWidth: number;
+  frameHeight: number;
+  data: IDirtyChartData;
+}
+
+export class LineChart {
+  protected svg: SVG;
+  protected dataKey: TChartDataKey;
+  protected frameWidth: number;
+  protected frameHeight: number;
+  protected data: IDirtyChartData;
+
+  protected xScale: any;
+  protected yScale: NumericScaler;
+
+  protected AXIS_TICK_SIZE_PX = 5;
+  protected parentElement: any;
+  protected X_AXIS_MARGIN_FROM_CHART_PX: number;
+  protected BASE_FONT_SIZE_PX: number;
+  protected BARS_COLOR_HEX: string;
+  protected transformedData: IDirtyChartData;
+
   protected X_AXIS_LABELS_PADDINGS_PX = { left: 15, top: 10 };
 
   protected Y_AXIS_OFFSET_FROM_BARS_PX = 5;
@@ -17,25 +37,83 @@ export class VerticalBarChart extends BarChart {
   private normalizedData: INormalizedChartsData;
 
   constructor(config: any) {
-    super(config);
+    this.svg = config.svg;
+    this.frameHeight = config.frameHeight;
+    this.frameWidth = config.frameWidth;
+    this.data = config.data;
+    this.dataKey = config.dataKey;
+    this.parentElement = config.parentElement;
+    this.X_AXIS_MARGIN_FROM_CHART_PX = config.X_AXIS_MARGIN_FROM_CHART_PX;
+    this.BASE_FONT_SIZE_PX = config.BASE_FONT_SIZE_PX;
+    this.BARS_COLOR_HEX = config.BARS_COLOR_HEX;
+    this.transformedData = this.transformData();
+    console.log('LINE CHART DATA', this.transformedData);
+
     this.MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX = config.MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX;
     this.xScale = this.initXScale(this.transformedData, this.frameWidth);
     this.yScale = this.initYScale(this.transformedData, this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX);
-
-    this.normalizedData = this.normalizeData(
-      this.transformedData,
-      this.basedOnMinBarHeightDataNormalizer,
-    );
   }
 
-  protected initXScale(data: IDirtyChartData, widthPx: number): StringifiedScaler {
-    return scaleBand()
-      .rangeRound([0, widthPx])
-      .paddingInner(0.05)
-      .align(0.1)
-      .domain(data.history.map((country) => {
-        return country.day;
-      })) as StringifiedScaler;
+  protected transformData(): any {
+    return { ...this.data, history: this.data.history.map((record) => {
+      return { ...record, day: new Date(record.day) };
+    }) };
+  }
+
+  protected drawXAxisWrapperIfNeeded(
+    svg: SVG,
+    heightPx: number,
+  ) {
+    let xAxisSelector = 'x-axis';
+    const xAxis = svg.select(`.${xAxisSelector}`);
+
+    if (xAxis.node()) {
+      return (xAxis as unknown as SVG).attr('transform', `translate(0,${heightPx})`);
+    } else {
+      return svg
+        .append('g')
+        .attr('class', xAxisSelector)
+        .attr('transform', `translate(0,${heightPx})`);
+    }
+  }
+
+  protected drawYAxisWrapperIfNeeded(
+    svg: SVG,
+    leftOffsetPx: number = 0,
+    topOffsetPx: number = 0,
+  ): SVG {
+    let yAxisSelector = 'y-axis';
+    const yAxis = svg.select(`.${yAxisSelector}`);
+
+    if (yAxis.node()) {
+      return (yAxis as unknown as SVG).attr('transform', `translate(${leftOffsetPx}, 0)`);
+    } else {
+      return svg
+        .append('g')
+        .attr('class', 'y-axis')
+        .attr('transform', `translate(${leftOffsetPx}, ${topOffsetPx})`);
+    }
+  }
+
+  protected drawBarsWrapperIfNeeded(svg: SVG): SVG {
+    const barsWrapper = svg.select('.bars');
+
+    if (!barsWrapper.node()) {
+      return svg
+        .append('g')
+        .attr('class', 'bars')
+        .attr('transform', 'translate(0,0)');
+    } else {
+      return barsWrapper as unknown as SVG;
+    }
+  }
+
+  protected initXScale(data: any, widthPx: number) {
+    // return scaleTime().rangeRound([0, widthPx]).domain(data.history.map((country: any) => {
+    //   return country.day;
+    // }));
+
+    return scaleTime().rangeRound([0, widthPx]);
   }
 
   protected drawYAxis(svg: SVG, yScale: NumericScaler) {
@@ -52,16 +130,6 @@ export class VerticalBarChart extends BarChart {
           .tickPadding(ticksOffsetFromAxis),
       )
       .attr('text-anchor', 'end');
-  }
-
-  protected updateYAxis(svg: SVG, yScale: NumericScaler) {
-    svg.select('.y-axis')
-      .selectAll('g')
-      .data([])
-      .exit()
-      .remove();
-
-    this.drawYAxis(svg, yScale);
   }
 
   protected initYScale(data: IDirtyChartData, heightPx: number): NumericScaler {
@@ -110,58 +178,15 @@ export class VerticalBarChart extends BarChart {
     frameHeightPx: number;
     barsConfig: { barsColor: string; enableTransition: boolean };
   }) {
-    const transitionOption = barsConfig.enableTransition ? transition().duration(500) : transition().duration(0);
-    const that = this;
-    const tooltip = select('body')
-      .append('div')
-      .attr('class', 'd3-tooltip')
-      .style('position', 'absolute')
-      .style('z-index', '5000')
-      .style('visibility', 'hidden')
-      .style('padding', '10px')
-      .style('background', 'rgba(0,0,0,0.6)')
-      .style('border-radius', '4px')
-      .style('color', '#fff')
-      .text('a simple tooltip');
 
-    this.drawBarsWrapperIfNeeded(svg)
-      .selectAll('g')
-      .data(data.history)
-      .enter()
-      .append('g')
-      .append('rect')
-      .on('mouseover',  function (event: MouseEvent, d: ICountryHistoryData) {
-        tooltip
-          .html(
-            `<div>${d[that.dataKey]} - ${d.day}</div>`,
-          )
-          .style('visibility', 'visible');
-        select(this).transition().attr('fill', '#FFF');
-      })
-      .on('mousemove', (event: MouseEvent) => {
-        tooltip
-          .style('top', (event as MouseEvent).pageY - 10 + 'px')
-          .style('left', (event as MouseEvent).pageX + 10 + 'px');
-      })
-      .on('mouseout', function () {
-        tooltip.html('').style('visibility', 'hidden');
-        select(this).transition().attr('fill', that.BARS_COLOR_HEX);
-      })
-      .attr('class', 'bar')
-      .attr('fill', barsConfig.barsColor)
-      .attr('x', (node: INormalizeCountryHistoryData) => {
-        return xScale(node.day);
-      })
-      .attr('y', (node: INormalizeCountryHistoryData) => {
-        return yScale(node.valueToShow);
-      })
-      .attr('width', () => {
-        return xScale.bandwidth();
-      })
-      .transition(transitionOption as any)
-      .attr('height', (node: INormalizeCountryHistoryData) => {
-        return frameHeightPx - yScale(node.valueToShow);
-      });
+    const lineMy = line().x((d: any) => xScale(d.day)).y((d: any) => yScale(d[this.dataKey]));
+    console.log('lineMy', lineMy);
+    this.drawBarsWrapperIfNeeded(svg).append('path')
+      .datum(data.history)
+      .attr('fill', 'red')
+      .attr('stroke', 'steelblue')
+      .attr('stroke-width', 1.5)
+      .attr('d', lineMy as any);
   }
 
   protected updateBars({
@@ -173,7 +198,7 @@ export class VerticalBarChart extends BarChart {
     barsConfig,
   }: {
     svg: SVG;
-    data: INormalizedChartsData;
+    data: any  ;
     xScale: any;
     yScale: NumericScaler;
     frameHeightPx: number;
@@ -200,7 +225,7 @@ export class VerticalBarChart extends BarChart {
 
     this.updateBars({
       svg: this.svg,
-      data: this.normalizedData,
+      data: this.transformedData,
       xScale: this.xScale,
       yScale: this.yScale,
       frameHeightPx: this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX,
@@ -244,13 +269,5 @@ export class VerticalBarChart extends BarChart {
     this.transformedData = this.transformData();
     this.xScale = this.initXScale(this.transformedData, this.frameWidth);
     this.yScale = this.initYScale(this.transformedData, this.frameHeight - this.X_AXIS_MARGIN_FROM_CHART_PX);
-    this.normalizedData = this.normalizeData(this.transformedData, this.basedOnMinBarHeightDataNormalizer);
   }
-
-  protected basedOnMinBarHeightDataNormalizer = (value: number) => {
-    return this.yScale(value) > this.frameHeight - this.MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX &&
-    value !== 0
-      ? this.yScale.invert(this.frameHeight - this.MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX)
-      : value;
-  };
 }

@@ -16,11 +16,10 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SearchInputComponent } from './components/search-input/search-input.component';
 import { ChartsComponent } from './components/charts/charts.component';
 import { SelectComponent } from './components/select/select.component';
-import { SkeletonWrapperComponent } from './components/skeleton/skeleton-wrapper/skeleton-wrapper.component';
-import { SkeletonLineComponent } from './components/skeleton/shapes/skeleton-line/skeleton-line.component';
-import { SkeletonCircleComponent } from './components/skeleton/shapes/skeleton-circle/skeleton-circle.component';
 import { TooltipDirective } from './directives/tooltip/tooltip.directive';
 import { PortalComponent } from './components/portal/portal.component';
+
+import { SkeletonWrapperComponent, SkeletonLineComponent, SkeletonCircleComponent, SkeletonDirective } from './components/skeleton';
 
 const declarations = [
   SpinnerComponent,
@@ -32,11 +31,12 @@ const declarations = [
   HighlightPipe,
   TimesPipe,
   PxToRemPipe,
+  TooltipDirective,
+  PortalComponent,
   SkeletonWrapperComponent,
   SkeletonLineComponent,
   SkeletonCircleComponent,
-  TooltipDirective,
-  PortalComponent,
+  SkeletonDirective,
 ];
 
 @NgModule({

@@ -10,6 +10,7 @@ export class SkeletonLineComponent {
   @Input() widthPx: number;
   @Input() range: [number, number];
   @Input() heightPx = 16;
+  @Input() borderRadiusPx: number = 8;
   @Input() marginsPx: { left: number; top: number; right: number; bottom: number };
 
   get width(): number {

@@ -1,0 +1,29 @@
+<div class="skeleton-wrapper">
+<div class="skeleton-nav-bar">
+  <app-skeleton-circle class="skeleton-nav-bar-item" [diameterPx]="40"></app-skeleton-circle>
+  <app-skeleton-line class="skeleton-nav-bar-item" [widthPx]="170" [heightPx]="40" [borderRadiusPx]="5"></app-skeleton-line>
+  <app-skeleton-line class="skeleton-nav-bar-item" [widthPx]="190" [heightPx]="40" [borderRadiusPx]="5"></app-skeleton-line>
+</div>
+<div class="skeleton-header">
+  <div class="skeleton-country-title">
+    <app-skeleton-line class="skeleton-country-name" [widthPx]="300" [heightPx]="60"></app-skeleton-line>
+    <app-skeleton-line class="skeleton-country-updated-date" [widthPx]="200" [heightPx]="16"></app-skeleton-line>
+  </div>
+  <div class="skeleton-country-today-info">
+    <app-skeleton-line [heightPx]="93" *ngFor="let i of 2 | appTimes"></app-skeleton-line>
+  </div>
+</div>
+<div class="skeleton-content">
+  <div class="skeleton-general-info">
+    <app-skeleton-line [heightPx]="93" *ngFor="let i of 9 | appTimes"></app-skeleton-line>
+  </div>
+  <div class="skeleton-charts">
+    <div class="skeleton-charts-header">
+      <app-skeleton-line [heightPx]="30" [widthPx]="200"></app-skeleton-line>
+    </div>
+    <div class="skeleton-chart">
+      <app-skeleton-line *ngFor="let i of 40 | appTimes" [heightPx]="getRandomHeight(10, 200)" [widthPx]="20" [borderRadiusPx]="5"></app-skeleton-line>
+    </div>
+  </div>
+</div>
+</div>

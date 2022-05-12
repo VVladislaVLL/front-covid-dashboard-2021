@@ -1,8 +1,7 @@
 <div class="wrapper">
-  <ng-container *ngIf="!isLoading; else loading">
+  <ng-container *appSkeleton="isLoading; skeletonTemplate: skeleton">
     <div class="nav-bar">
       <div class="btn back" (click)="closeDetails()"><i class="material-icons icon">close</i></div>
-      <!-- TODO: is it needed ? -->
       <div class="btn world"><i class="material-icons icon">public</i>World</div>
       <div class="btn country">
         <div class="flag-icon" [ngStyle]="{'background-image': 'url(' + countryFlag + ')'}"></div>
@@ -69,6 +68,22 @@
       </div>
       <div class="charts">
         <div class="charts-header">
+          Line Chart: Infected
+          <i *ngIf="!basicCountryData.infected"
+             class="material-icons"
+             [appTooltip]="getTooltipText('infected')"
+          >
+            info
+          </i>
+        </div>
+        <app-charts
+          [data]="countryCovidOverview"
+          [dataKey]="'infected'"
+          [DEFAULT_BAR_CHART_COLOR]="'#A33636'"
+          [type]="'line'"
+        ></app-charts>
+
+        <div class="charts-header">
           Bar Chart: Infected
           <i *ngIf="!basicCountryData.infected"
              class="material-icons"
@@ -129,6 +144,6 @@
   </ng-container>
 </div>
 
-<ng-template #loading>
-  <app-spinner></app-spinner>
+<ng-template #skeleton>
+  <app-skeleton-country-details></app-skeleton-country-details>
 </ng-template>

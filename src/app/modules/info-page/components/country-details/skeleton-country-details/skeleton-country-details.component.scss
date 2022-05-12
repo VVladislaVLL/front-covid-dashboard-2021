@@ -1,0 +1,91 @@
+@import 'src/theme/core-variables';
+
+:host {
+  width: 100%;
+}
+
+.skeleton-wrapper {
+  width: 100%;
+}
+
+.skeleton-header {
+  margin-top: px-to-rem(40px);
+  display: flex;
+  width: 100%;
+  padding: px-to-rem(20px) 0;
+  height: fit-content;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: px-to-rem(30px);
+}
+
+.skeleton-country-title {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+
+  .skeleton-country-name {
+    line-height: px-to-rem(60px);
+  }
+
+  .skeleton-country-updated-date {
+    margin-top: px-to-rem(10px);
+  }
+}
+
+.skeleton-country-today-info {
+  min-width: px-to-rem(300px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: px-to-rem(10px);
+  grid-row-gap: px-to-rem(10px);
+}
+
+.skeleton-nav-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+
+  .skeleton-nav-bar-item {
+    margin-right: px-to-rem(10px);
+  }
+
+  :last-child {
+    margin-right: 0;
+  }
+}
+
+.skeleton-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  .skeleton-general-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: px-to-rem(15px);
+    grid-row-gap: px-to-rem(15px);
+    min-width: px-to-rem(500px);
+    width: 100%;
+  }
+
+  .skeleton-charts {
+    width: 100%;
+
+    .skeleton-charts-header {
+      margin: px-to-rem(30px) 0;
+      padding: px-to-rem(30px) 0;
+    }
+
+    .skeleton-chart {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+  }
+}
+

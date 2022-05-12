@@ -11,6 +11,7 @@ import { select } from 'd3';
 
 import { DEFAULT_BAR_CHART_COLOR, IDirtyChartData, SVG, TChartDataKey } from './charts.contants';
 import { VerticalBarChart } from './chartable/bar-chart/VerticalBarChart';
+import { LineChart } from './chartable/line-chart/LineChart';
 
 @Component({
   selector: 'app-charts',
@@ -22,14 +23,15 @@ export class ChartsComponent implements OnChanges {
   @Input() data: IDirtyChartData;
   @Input() dataKey: TChartDataKey = 'infected';
   @Input() isLoadingChartsData: boolean = false;
-  @Input() DEFAULT_BAR_CHART_COLOR?: string = DEFAULT_BAR_CHART_COLOR;
+  @Input() type: 'bar' | 'line' = 'bar';
+  @Input() DEFAULT_BAR_CHART_COLOR: string = DEFAULT_BAR_CHART_COLOR;
 
   private VerticalBarChart: VerticalBarChart;
+  private LineChart: LineChart;
 
   private DRAW_FRAME_MARGINS_PX = { top: 50, left: 100, bottom: 50, right: 50 };
   private VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX = { top: 50, left: 100, bottom: 50, right: 50 };
   private X_AXIS_MARGIN_FROM_CHART_PX = 10;
-  // private DEFAULT_BAR_CHART_COLOR = DEFAULT_BAR_CHART_COLOR;
   private BASE_FONT_SIZE_PX = 16;
   private MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX = 30;
 
@@ -43,7 +45,15 @@ export class ChartsComponent implements OnChanges {
       this.clearCanvas();
       this.initDrawableChartsIfNeeded();
       this.reinitChartsIfNeeded();
-      this.drawBarChart();
+      switch (this.type) {
+        case 'line':
+          this.drawLineChart();
+          break;
+        case 'bar':
+        default:
+          this.drawBarChart();
+          break;
+      }
     }
   }
 
@@ -110,19 +120,47 @@ export class ChartsComponent implements OnChanges {
       BASE_FONT_SIZE_PX: this.BASE_FONT_SIZE_PX,
     };
 
-    this.initVertical1dBarChartIfNeeded(commonBarChartDeps);
+
+    switch (this.type) {
+      case 'line':
+        this.initLineChartIfNeeded(commonBarChartDeps);
+        break;
+      case 'bar':
+      default:
+        this.initVertical1dBarChartIfNeeded(commonBarChartDeps);
+        break;
+    }
+    // if (this.type === 'bar') {
+    //   this.initVertical1dBarChartIfNeeded(commonBarChartDeps);
+    // }
   }
 
   private reinitChartsIfNeeded() {
-    this.VerticalBarChart.reinitData({
-      svg: this.createDrawFrame(this.VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX),
-      frameWidth: this.getHorizontalBarMaxWidth(),
-      frameHeight: this.getMaxHorizontalBarChartFrameHeight(
-        this.VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX,
-      ),
-      data: this.data,
-      barsColorHex: this.DEFAULT_BAR_CHART_COLOR,
-    });
+    switch (this.type) {
+      case 'line':
+        this.LineChart.reinitData({
+          svg: this.createDrawFrame(this.VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX),
+          frameWidth: this.getHorizontalBarMaxWidth(),
+          frameHeight: this.getMaxHorizontalBarChartFrameHeight(
+            this.VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX,
+          ),
+          data: this.data,
+          barsColorHex: this.DEFAULT_BAR_CHART_COLOR,
+        });
+        break;
+      case 'bar':
+      default:
+        this.VerticalBarChart.reinitData({
+          svg: this.createDrawFrame(this.VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX),
+          frameWidth: this.getHorizontalBarMaxWidth(),
+          frameHeight: this.getMaxHorizontalBarChartFrameHeight(
+            this.VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX,
+          ),
+          data: this.data,
+          barsColorHex: this.DEFAULT_BAR_CHART_COLOR,
+        });
+        break;
+    }
   }
 
   private initVertical1dBarChartIfNeeded(deps: any) {
@@ -137,7 +175,23 @@ export class ChartsComponent implements OnChanges {
     });
   }
 
+  private initLineChartIfNeeded(deps: any) {
+    this.LineChart = new LineChart({
+      ...deps,
+      svg: this.createDrawFrame(this.VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX),
+      frameWidth: this.getHorizontalBarMaxWidth(),
+      frameHeight: this.getMaxHorizontalBarChartFrameHeight(this.VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX),
+      MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX: this.MIN_VERTICAL_BAR_CHART_ELEMENT_HEIGHT_PX,
+      DRAW_FRAME_MARGINS_PX: this.VERTICAL_BAR_CHART_DRAW_FRAME_MARGINS_PX,
+      BARS_COLOR_HEX: this.DEFAULT_BAR_CHART_COLOR,
+    });
+  }
+
   private drawBarChart() {
     this.VerticalBarChart.draw();
+  }
+
+  private drawLineChart() {
+    this.LineChart.draw();
   }
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -14,6 +14,8 @@ import { CountryTooltipComponent } from './components/map/country-tooltip/countr
 import { SidebarSkeletonComponent } from './components/sidebar/sidebar-skeleton/sidebar-skeleton.component';
 import { InfoPageRoutingModule } from './info-page-routing.module';
 import { CountryDetailsComponent } from './components/country-details/country-details/country-details.component';
+import { SkeletonCountryDetailsComponent } from './components/country-details/skeleton-country-details/skeleton-country-details.component';
+
 @NgModule({
   declarations: [
     CountryRowComponent,
@@ -26,6 +28,7 @@ import { CountryDetailsComponent } from './components/country-details/country-de
     CountryTooltipComponent,
     SidebarSkeletonComponent,
     CountryDetailsComponent,
+    SkeletonCountryDetailsComponent,
   ],
   imports: [
     CommonModule,
