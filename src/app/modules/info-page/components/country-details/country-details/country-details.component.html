@@ -76,15 +76,10 @@
             info
           </i>
         </div>
-        <app-charts
-          [data]="countryCovidOverview"
-          [dataKey]="'infected'"
-          [DEFAULT_BAR_CHART_COLOR]="'#A33636'"
-          [type]="'line'"
-        ></app-charts>
-
+        <plotly-plot [data]="getDataForPredictionLinePlot()" [layout]="getLayoutForPredictionLinePlot('Prediction')"
+        ></plotly-plot>
         <div class="charts-header">
-          Bar Chart: Infected
+          Bar Chart: Infected | Vaccinated | Recovered
           <i *ngIf="!basicCountryData.infected"
              class="material-icons"
              [appTooltip]="getTooltipText('infected')"
@@ -92,53 +87,20 @@
             info
           </i>
         </div>
-        <app-charts
-          [data]="countryCovidOverview"
-          [dataKey]="'infected'"
-          [DEFAULT_BAR_CHART_COLOR]="'#A33636'"
-        ></app-charts>
+        <plotly-plot [data]="getFirstChartsData()" [layout]="getLayoutForPredictionLinePlot('Infected | Vaccinated | Recovered')"
+        ></plotly-plot>
+
         <div class="charts-header">
-          Bar Chart: Recovered
-          <i *ngIf="!basicCountryData.recovered"
+          Bar Chart: Dead | Sick
+          <i *ngIf="!basicCountryData.infected"
              class="material-icons"
-             [appTooltip]="getTooltipText('recovered')"
+             [appTooltip]="getTooltipText('infected')"
           >
             info
           </i>
         </div>
-        <app-charts
-          [data]="countryCovidOverview"
-          [dataKey]="'recovered'"
-          [DEFAULT_BAR_CHART_COLOR]="'#70A32E'"
-        ></app-charts>
-        <div class="charts-header">
-          Bar Chart: Deaths
-          <i *ngIf="!basicCountryData.dead"
-             class="material-icons"
-             [appTooltip]="getTooltipText('dead')"
-          >
-            info
-          </i>
-        </div>
-        <app-charts
-          [data]="countryCovidOverview"
-          [dataKey]="'dead'"
-          [DEFAULT_BAR_CHART_COLOR]="'#A33636'"
-        ></app-charts>
-        <div class="charts-header">
-          Bar Chart: Vaccinated
-          <i *ngIf="!basicCountryData.vaccinated"
-             class="material-icons"
-             [appTooltip]="getTooltipText('vaccinated')"
-          >
-            info
-          </i>
-        </div>
-        <app-charts
-          [data]="countryCovidOverview"
-          [dataKey]="'vaccinated'"
-          [DEFAULT_BAR_CHART_COLOR]="'#1C82FF'"
-        ></app-charts>
+        <plotly-plot [data]="getSecondChartsData()" [layout]="getLayoutForPredictionLinePlot('Dead | Sick')"
+        ></plotly-plot>`
       </div>
     </div>
   </ng-container>

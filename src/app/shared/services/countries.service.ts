@@ -37,6 +37,13 @@ export class CountriesService {
     return this.http.get(`http://localhost:3000/covid/overview?country=${iso2}`);
   }
 
+  public getCountryCovidPredictionByISO2A(iso2: string): Observable<any> {
+    console.log(iso2);
+    // return this.http.get(`http://localhost:3000/covid/prediction-data?country=${iso2}`);
+    return this.http.get(`http://localhost:3000/covid/predicted?country=${iso2}`);
+    // return this.http.get(`http://localhost:3000/covid/overview?country=${iso2}`);
+  }
+
   public getGeneralCountryInfoByISO2(iso2: string): Observable<any> {
     return this.http.get(`http://localhost:3000/countries/${iso2}`);
   }

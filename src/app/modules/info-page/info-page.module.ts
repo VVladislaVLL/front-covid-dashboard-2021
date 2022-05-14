@@ -15,6 +15,7 @@ import { SidebarSkeletonComponent } from './components/sidebar/sidebar-skeleton/
 import { InfoPageRoutingModule } from './info-page-routing.module';
 import { CountryDetailsComponent } from './components/country-details/country-details/country-details.component';
 import { SkeletonCountryDetailsComponent } from './components/country-details/skeleton-country-details/skeleton-country-details.component';
+import { PlotlySharedModule } from 'angular-plotly.js';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SkeletonCountryDetailsComponent } from './components/country-details/sk
     ReactiveFormsModule,
     SharedModule,
     InfoPageRoutingModule,
+    PlotlySharedModule,
   ],
   exports: [
     CountryRowComponent,
